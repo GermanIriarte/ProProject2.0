@@ -1,0 +1,18 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+body {
+  background-color: #ffd3d5; /* Cambia el valor a cualquier color que desees */
+  margin: 100; /* Opcional: Elimina los márgenes predeterminados */
+  font-family: Arial, sans-serif; /* Opcional: Cambia la fuente si lo deseas */
+}
+
+body {
+  background: linear-gradient(to right, #f16845, #e2a87b); /* Cambia los colores del gradiente según tus preferencias */
+  margin: 0;
+  font-family: Arial, sans-serif;
+}

@@ -1,0 +1,61 @@
+.App {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+  background-color: #ffffff; /* Cambia el valor a cualquier color que desees */
+}
+
+.container {
+  display: flex;
+  width: 100%; /* Ajusta según tus necesidades */
+  height: 70%; /* Ajusta según tus necesidades */
+  border: 1px solid #ffffff; /* Opcional: borde alrededor del contenedor principal */
+}
+
+.login-container {
+  flex: 1;
+  border-right: 1px solid #ccc; /* Línea vertical a la derecha del formulario */
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.login-form {
+  max-width: 270px;
+  margin: auto;
+}
+
+.login-form div {
+  margin-bottom: 1rem;
+}
+
+.login-form label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.login-form input,
+.login-form select {
+  width: 100%;
+  padding: 0.5rem;
+  box-sizing: border-box;
+}
+
+.login-form button {
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.login-form button:hover {
+  background-color: #0056b3;
+}
+
+.content {
+  flex: 2; /* Ocupa el doble de espacio que el formulario */
+  padding: 1rem;
+  box-sizing: border-box;
+}
