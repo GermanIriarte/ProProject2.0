@@ -13,7 +13,7 @@ const db = mysql.createConnection({
     database: "shopro"
 })
 
-app.get("/i",(req,res) =>{
+app.get("/",(req,res) =>{
     const sql = "SELECT * FROM persona";
     db.query(sql, (err,data) => {
         if (err) return app.json("Error");
