@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import axios from 'axios'
 import './Persona.css';
+import { Link } from "react-router-dom";
 
 function Persona() {
     const [Persona, setPersona] = useState([])
@@ -13,7 +14,7 @@ function Persona() {
     return (
         <div className='persona-container'>
             <div className='persona-content'>
-                <button className='persona-add-btn'>Add +</button>
+                <Link to = "/create"className='persona-add-btn'>Add +</Link>
                 <table className='persona-table'>
                     <thead>
                         <tr>
