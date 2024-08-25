@@ -13,15 +13,7 @@ const db = mysql.createConnection({
     database: "shopro"
 })
 
-app.get("/",(req,res) =>{
-    const sql = "SELECT * FROM persona";
-    db.query(sql, (err,data) => {
-        if (err) return app.json("Error");
-        return res.json(data);
-    })
-})
-
-app.post('/create',(req, res)=>{
+app.post("/create",(req, res)=>{
     const sql = "INSTERT INTO persona ('ID_Persona','Nombres','Apellido1','Apellido2','FechaNac','Correo','Telefono') VALUES (?)";
     const values =[
         req.body.ID_Persona,
@@ -37,6 +29,15 @@ app.post('/create',(req, res)=>{
         return res.json(data);
     })
 })
+app.get("/",(req,res) =>{
+    const sql = "SELECT * FROM persona";
+    db.query(sql, (err,data) => {
+        if (err) return app.json("Error");
+        return res.json(data);
+    })
+})
+
+
 
 app.listen(8081,() => {
     console.log("Listening ");
