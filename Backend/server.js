@@ -43,7 +43,8 @@ app.get("/",(req,res) =>{
 })
 
 app.put('/update/:ID_Persona', (req, res) => {
-    const sql = "update `persona` set `Nombres` = ?, `Apellido1` = ?, `Apellido2` = ?, `FechaNac` = ?, `Correo` = ?, `Telefono` = ? where ID_Persona = ?";
+    const ID_Persona = req.params.ID_Persona
+    const sql = "UPDATE `persona` SET `Nombres` = ?, `Apellido1` = ?, `Apellido2` = ?, `FechaNac` = ?, `Correo` = ?, `Telefono` = ? where ID_Persona = ?";
     const values = [
         req.body.Nombres,
         req.body.Apellido1,
@@ -51,16 +52,30 @@ app.put('/update/:ID_Persona', (req, res) => {
         req.body.FechaNac,
         req.body.Correo,
         req.body.Telefono
-    ];
-    const ID_Persona = req.params.ID_Persona
+    ]
+    
     db.query(sql, [...values, ID_Persona], (err, data) => {
         if (err) {
             console.error(err); // Muestra el error en la consola
             return res.json("Error");
         }
-        return res.json(data);
+        return res.json("data UPDATED SUCCESS");
     });
 });
+
+app.delete('/Persona/:ID_Persona', (req, res) => {
+    const ID_Persona = req.params.ID_Persona;
+    console.log("ID_Persona to delete:", ID_Persona); // Verifica si el ID_Persona es correcto
+    const sql = "DELETE FROM `persona` WHERE ID_Persona = ?";
+    db.query(sql, [ID_Persona], (err, data) => {
+        if (err) {
+            console.error(err); // Muestra el error en la consola
+            return res.json("Error");
+        }
+        return res.json("Data DELETED SUCCESS");
+    });
+});
+
 
 app.listen(8081,() => {
     console.log("Listening ");

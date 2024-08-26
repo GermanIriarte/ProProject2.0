@@ -10,7 +10,14 @@ function Persona() {
             .then(res => setPersona(res.data))
             .catch(err => console.log(err));
     }, []);
-
+    const handleDelete = async(ID_Persona) =>{
+        try {
+            await axios.delete('http://localhost:8081/Persona/' + ID_Persona )
+            window.location.reload()
+        }catch(err) {
+            console.log(err);
+        }
+    }
     return (
         <div className='persona-container'>
             <div className='persona-content'>
@@ -40,7 +47,7 @@ function Persona() {
                                     <td>{data.Correo}</td>
                                     <td>{data.Telefono}</td>
                                     <td><Link to={`update/${data.ID_Persona}`} className='btn btn-primary'>Update</Link></td>
-                                    <td><button className="persona-delete-btn">Delete</button></td>
+                                    <td><button className="persona-delete-btn" onClick={() => handleDelete(data.ID_Persona)}>Delete</button></td>
                                 </tr>
                             ))
                         }
