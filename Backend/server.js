@@ -23,13 +23,13 @@ app.post("/create", (req, res) => {
         req.body.FechaNac,
         req.body.Correo,
         req.body.Telefono
-    ];
+    ]
     db.query(sql, [values], (err, data) => {
         if (err) {
             console.error(err); // Muestra el error en la consola
             return res.json("Error");
         }
-        return res.json(data);
+        return res.json("data se mando de manera exitosa");
     });
 });
 
