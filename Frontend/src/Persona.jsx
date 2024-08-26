@@ -39,7 +39,7 @@ function Persona() {
                                     <td>{data.FechaNac}</td>
                                     <td>{data.Correo}</td>
                                     <td>{data.Telefono}</td>
-                                    <td><button className="persona-update-btn">Update</button></td>
+                                    <td><Link to={`update/${data.ID_Persona}`} className='btn btn-primary'>Update</Link></td>
                                     <td><button className="persona-delete-btn">Delete</button></td>
                                 </tr>
                             ))

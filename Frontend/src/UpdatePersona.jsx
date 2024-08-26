@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import './CreatePerson.css';
+import { useNavigate, useParams } from 'react-router-dom';
 
-function CreatePersona() {
+function UpdatePersona() {
     const [Nombres, Setname] = useState('');
     const [Apellido1, SetLastName1] = useState('');
     const [Apellido2, SetLastName2] = useState('');
     const [FechaNac, SetDate] = useState('');
     const [Correo, SetEmail] = useState('');
-    const [Telefono, SetPhone] = useState('');  
+    const [Telefono, SetPhone] = useState(''); 
+    const {ID_Persona} = useParams();
     const navigate = useNavigate();
 
     function handleSubmit(event) {
         event.preventDefault();
-        axios.post('http://localhost:8081/create', {
+        axios.put('http://localhost:8081/update/' + ID_Persona, {
             Nombres, 
             Apellido1, 
             Apellido2, 
@@ -33,7 +33,7 @@ function CreatePersona() {
         <div className='container'>
             <div className='form-container'>
                 <form onSubmit={handleSubmit}>
-                    <h2>Add Persona</h2>
+                    <h2>Update Persona</h2>
                     <div className='mb-2'>
                         <label htmlFor=''>Name</label>
                         <input 
@@ -88,11 +88,11 @@ function CreatePersona() {
                             onChange={e => SetPhone(e.target.value)}  
                         />
                     </div>
-                    <button className='btn btn-success'>Submit</button>
+                    <button className='btn btn-success'>Update</button>
                 </form>
             </div>
         </div>
     );
 }
 
-export default CreatePersona;
+export default UpdatePersona;
