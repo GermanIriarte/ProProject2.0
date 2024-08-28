@@ -14,7 +14,7 @@ function RoutesNav(){
                     <Route path='/' element= {<App />}></Route>
                     <Route path='/home' element= {<Persona />}></Route>
                     <Route path='/create' element= {<CreatePersona />}></Route>
-                    <Route path='/update/:ID_Persona' element= {<UpdatePersona />}></Route>
+                    <Route path='home/update/:ID_Persona' element= {<UpdatePersona />}></Route>
                 </Routes>
             </BrowserRouter>
         </div>

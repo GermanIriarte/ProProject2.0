@@ -25,7 +25,7 @@ function UpdatePersona() {
         })
         .then(res => {
             console.log(res);
-            navigate('/');
+            navigate('/home');
         })
         .catch(err => console.log(err));
     }
