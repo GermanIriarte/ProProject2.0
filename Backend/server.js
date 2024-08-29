@@ -50,6 +50,20 @@ app.post("/createProducto", (req, res) => {
     });
 });
 
+app.post("/createProveedor", (req, res) => {
+    const sql = "INSERT INTO `proveedor` (`Nombre_Proveedor`) VALUES (?)";
+    const values = [
+        req.body.Nombre_Proveedor
+    ]
+    db.query(sql, [values], (err, data) => {
+        if (err) {
+            console.error(err); // Muestra el error en la consola
+            return res.json("Error");
+        }
+        return res.json("data se mando de manera exitosa");
+    });
+});
+
 app.get("/readProductos",(req,res) =>{
     const sql = "SELECT * FROM productos";
     db.query(sql, (err,data) => {
@@ -60,6 +74,14 @@ app.get("/readProductos",(req,res) =>{
 
 app.get("/readPersona",(req,res) =>{
     const sql = "SELECT * FROM persona";
+    db.query(sql, (err,data) => {
+        if (err) return app.json("Error");
+        return res.json(data);
+    })
+})
+
+app.get("/readProveedor",(req,res) =>{
+    const sql = "SELECT * FROM proveedor";
     db.query(sql, (err,data) => {
         if (err) return app.json("Error");
         return res.json(data);
@@ -107,6 +129,23 @@ app.put('/updateProducto/:Cod_Producto', (req, res) => {
     });
 });
 
+app.put('/updateProveedor/:Cod_Proveedor', (req, res) => {
+    const Cod_Proveedor = req.params.Cod_Proveedor;
+    
+    const sql = "UPDATE `proveedor` SET `Nombre_Proveedor` = ? where Cod_Proveedor = ?";
+    const values = [
+        req.body.Nombre_Proveedor
+    ]
+    
+    db.query(sql, [...values, Cod_Proveedor], (err, data) => {
+        if (err) {
+            console.error(err); // Muestra el error en la consola
+            return res.json("Error");
+        }
+        return res.json("data UPDATED SUCCESS");
+    });
+});
+
 app.delete('/deletePersona/:ID_Persona', (req, res) => {
     const ID_Persona = req.params.ID_Persona;
     console.log("ID_Persona to delete:", ID_Persona); // Verifica si el ID_Persona es correcto
@@ -132,6 +171,20 @@ app.delete('/deleteProducto/:Cod_Producto', (req, res) => {
         return res.json("Data DELETED SUCCESS");
     });
 });
+
+app.delete('/deleteProveedor/:Cod_Proveedor', (req, res) => {
+    const Cod_Proveedor = req.params.Cod_Proveedor;
+    console.log("Cod_Proveedor to delete:", Cod_Proveedor); // Verifica si el Cod_Proveedor es correcto
+    const sql = "DELETE FROM `proveedor` WHERE Cod_Proveedor = ?";
+    db.query(sql, [Cod_Proveedor], (err, data) => {
+        if (err) {
+            console.error(err); // Muestra el error en la consola
+            return res.json("Error");
+        }
+        return res.json("Data DELETED SUCCESS");
+    });
+});
+
 
 
 app.listen(8081,() => {

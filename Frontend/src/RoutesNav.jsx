@@ -8,6 +8,9 @@ import App from './App'
 import Producto from './Producto';
 import CreateProducto from './CreateProducto';
 import UpdateProducto from './UpdateProducto';
+import Proveedor from './Proveedor';
+import CreateProveedor from './CreateProveedor';
+import UpdateProveedor from './UpdateProveedor';
 
 
 function RoutesNav(){
@@ -22,6 +25,9 @@ function RoutesNav(){
                     <Route path='/homeProducto' element= {<Producto />}></Route>
                     <Route path='/createProducto' element= {<CreateProducto />}></Route>
                     <Route path='homeProducto/updateProducto/:Cod_Producto' element= {<UpdateProducto />}></Route>
+                    <Route path='/homeProveedor' element= {<Proveedor />}></Route>
+                    <Route path='/createProveedor' element= {<CreateProveedor />}></Route>
+                    <Route path='homeProveedor/updateProveedor/:Cod_Proveedor' element= {<UpdateProveedor />}></Route>
                 </Routes>
             </BrowserRouter>
         </div>
