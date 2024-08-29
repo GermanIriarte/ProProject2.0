@@ -6,13 +6,13 @@ import { Link } from "react-router-dom";
 function Persona() {
     const [Persona, setPersona] = useState([])
     useEffect(() => {
-        axios.get('http://localhost:8081/')
+        axios.get('http://localhost:8081/readPersona')
             .then(res => setPersona(res.data))
             .catch(err => console.log(err));
     }, []);
     const handleDelete = async(ID_Persona) =>{
         try {
-            await axios.delete('http://localhost:8081/Persona/' + ID_Persona )
+            await axios.delete('http://localhost:8081/deletePersona/' + ID_Persona )
             window.location.reload()
         }catch(err) {
             console.log(err);

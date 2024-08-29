@@ -11,11 +11,11 @@ function UpdatePersona() {
     const [Telefono, SetPhone] = useState(''); 
     const {ID_Persona} = useParams();
     const navigate = useNavigate();
-
+    console.log("CODIGO PERSONA: ",ID_Persona)
     function handleSubmit(event) {
         event.preventDefault();
         const formattedDate = new Date(FechaNac).toISOString().split('T')[0];  // Esto asegura el formato 'YYYY-MM-DD'
-        axios.put('http://localhost:8081/update/' + ID_Persona, {
+        axios.put('http://localhost:8081/updatePersona/' + ID_Persona, {
             Nombres, 
             Apellido1, 
             Apellido2, 

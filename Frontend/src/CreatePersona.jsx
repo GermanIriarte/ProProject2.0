@@ -15,7 +15,7 @@ function CreatePersona() {
     function handleSubmit(event) {
         event.preventDefault();
         const formattedDate = new Date(FechaNac).toISOString().split('T')[0];  // Esto asegura el formato 'YYYY-MM-DD'
-        axios.post('http://localhost:8081/create', {
+        axios.post('http://localhost:8081/createPersona', {
             Nombres, 
             Apellido1, 
             Apellido2, 
