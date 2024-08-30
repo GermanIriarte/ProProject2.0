@@ -13,6 +13,64 @@ const db = mysql.createConnection({
     database: "shopro"
 })
 
+app.post("/createCliente", (req, res) => {
+    // Iniciar la transacción
+    db.beginTransaction((err) => {
+        if (err) {
+            console.error(err);
+            return res.json("Transaction Error");
+        }
+
+        // Insertar en la tabla persona
+        const sqlPersona = "INSERT INTO `persona` (`Nombres`, `Apellido1`, `Apellido2`, `FechaNac`, `Correo`, `Telefono`) VALUES (?)";
+        const valuesPersona = [
+            req.body.Nombres,
+            req.body.Apellido1,
+            req.body.Apellido2,
+            req.body.FechaNac,
+            req.body.Correo,
+            req.body.Telefono
+        ];
+
+        db.query(sqlPersona, [valuesPersona], (err, result) => {
+            if (err) {
+                return db.rollback(() => {
+                    console.error(err);
+                    return res.json("Error inserting into persona");
+                });
+            }
+
+            // Obtener el ID_Persona recién insertado
+            const ID_Persona = result.insertId;
+
+            // Insertar en la tabla cliente utilizando el ID_Persona
+            const sqlCliente = "INSERT INTO `cliente` (`ID_Persona`, `Puntos`) VALUES (?, ?)";
+            const valuesCliente = [ID_Persona, req.body.Puntos];
+
+            db.query(sqlCliente, valuesCliente, (err, data) => {
+                if (err) {
+                    return db.rollback(() => {
+                        console.error(err);
+                        return res.json("Error inserting into cliente");
+                    });
+                }
+
+                // Confirmar la transacción
+                db.commit((err) => {
+                    if (err) {
+                        return db.rollback(() => {
+                            console.error(err);
+                            return res.json("Transaction Commit Error");
+                        });
+                    }
+
+                    return res.json("Cliente created successfully");
+                });
+            });
+        });
+    });
+});
+
 
 app.post("/createPersona", (req, res) => {
     const sql = "INSERT INTO `persona` (`Nombres`, `Apellido1`, `Apellido2`, `FechaNac`, `Correo`, `Telefono`) VALUES (?)";
@@ -80,6 +138,28 @@ app.get("/readPersona",(req,res) =>{
     })
 })
 
+app.get("/readCliente", (req, res) => {
+    const sql = `
+        SELECT persona.*, cliente.Puntos 
+        FROM persona 
+        INNER JOIN cliente 
+        ON persona.ID_Persona = cliente.ID_Persona
+    `;
+
+    db.query(sql, (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.json("Error");
+        }
+        
+        // Enviar la respuesta con los datos combinados de persona y cliente
+        return res.json(data);
+    });
+});
+
+
+
+
 app.get("/readProveedor",(req,res) =>{
     const sql = "SELECT * FROM proveedor";
     db.query(sql, (err,data) => {
@@ -108,6 +188,47 @@ app.put('/updatePersona/:ID_Persona', (req, res) => {
         return res.json("data UPDATED SUCCESS");
     });
 });
+
+app.put('/updateCliente/:ID_Persona', (req, res) => {
+    const ID_Persona = req.params.ID_Persona;
+
+    // Consulta SQL para actualizar la tabla persona
+    const sqlPersona = "UPDATE `persona` SET `Nombres` = ?, `Apellido1` = ?, `Apellido2` = ?, `FechaNac` = ?, `Correo` = ?, `Telefono` = ? WHERE `ID_Persona` = ?";
+    
+    const valuesPersona = [
+        req.body.Nombres,
+        req.body.Apellido1,
+        req.body.Apellido2,
+        req.body.FechaNac,
+        req.body.Correo,
+        req.body.Telefono
+    ];
+
+    // Ejecutar la primera consulta para actualizar persona
+    db.query(sqlPersona, [...valuesPersona, ID_Persona], (err, data) => {
+        if (err) {
+            console.error(err); // Muestra el error en la consola
+            return res.json("Error");
+        }
+
+        // Consulta SQL para actualizar la tabla cliente
+        const sqlCliente = "UPDATE `cliente` SET `Puntos` = ? WHERE `ID_Persona` = ?";
+        const valuesCliente = [
+            req.body.Puntos
+        ];
+
+        // Ejecutar la segunda consulta para actualizar cliente
+        db.query(sqlCliente, [...valuesCliente, ID_Persona], (err, data) => {
+            if (err) {
+                console.error(err); // Muestra el error en la consola
+                return res.json("Error");
+            }
+            return res.json("data UPDATED SUCCESS");
+        });
+    });
+});
+
+
 
 app.put('/updateProducto/:Cod_Producto', (req, res) => {
     const Cod_Producto = req.params.Cod_Producto;
@@ -158,6 +279,54 @@ app.delete('/deletePersona/:ID_Persona', (req, res) => {
         return res.json("Data DELETED SUCCESS");
     });
 });
+
+app.delete('/deleteCliente/:ID_Persona', (req, res) => {
+    const ID_Persona = req.params.ID_Persona;
+    console.log("ID_Persona to delete:", ID_Persona); // Verifica si el ID_Persona es correcto
+
+    // Iniciar la transacción
+    db.beginTransaction((err) => {
+        if (err) {
+            console.error(err);
+            return res.json("Transaction Error");
+        }
+
+        // Eliminar de la tabla cliente
+        const sqlDeleteCliente = "DELETE FROM `cliente` WHERE ID_Persona = ?";
+        db.query(sqlDeleteCliente, [ID_Persona], (err, data) => {
+            if (err) {
+                return db.rollback(() => {
+                    console.error(err); // Muestra el error en la consola
+                    return res.json("Error deleting from cliente");
+                });
+            }
+
+            // Eliminar de la tabla persona
+            const sqlDeletePersona = "DELETE FROM `persona` WHERE ID_Persona = ?";
+            db.query(sqlDeletePersona, [ID_Persona], (err, data) => {
+                if (err) {
+                    return db.rollback(() => {
+                        console.error(err); // Muestra el error en la consola
+                        return res.json("Error deleting from persona");
+                    });
+                }
+
+                // Confirmar la transacción
+                db.commit((err) => {
+                    if (err) {
+                        return db.rollback(() => {
+                            console.error(err); // Muestra el error en la consola
+                            return res.json("Transaction Commit Error");
+                        });
+                    }
+
+                    return res.json("Data DELETED SUCCESS");
+                });
+            });
+        });
+    });
+});
+
 
 app.delete('/deleteProducto/:Cod_Producto', (req, res) => {
     const Cod_Producto = req.params.Cod_Producto;

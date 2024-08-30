@@ -11,6 +11,13 @@ import UpdateProducto from './UpdateProducto';
 import Proveedor from './Proveedor';
 import CreateProveedor from './CreateProveedor';
 import UpdateProveedor from './UpdateProveedor';
+import Clientes from './Clientes';
+import CreateClientes from './CreateClientes';
+import UpdateClientes from './UpdateClientes';
+
+
+
+
 
 
 function RoutesNav(){
@@ -28,6 +35,11 @@ function RoutesNav(){
                     <Route path='/homeProveedor' element= {<Proveedor />}></Route>
                     <Route path='/createProveedor' element= {<CreateProveedor />}></Route>
                     <Route path='homeProveedor/updateProveedor/:Cod_Proveedor' element= {<UpdateProveedor />}></Route>
+                    <Route path='/Clientes' element= {<Clientes />}></Route>
+                    <Route path='/createClientes' element= {<CreateClientes />}></Route>
+                    <Route path='Clientes/updateClientes/:ID_Persona' element= {<UpdateClientes />}></Route>
+                    
+                    
                 </Routes>
             </BrowserRouter>
         </div>
