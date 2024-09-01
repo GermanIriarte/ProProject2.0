@@ -13,6 +13,69 @@ const db = mysql.createConnection({
     database: "shopro"
 })
 
+app.post("/createEmpleado", (req, res) => {
+    // Iniciar la transacción
+    db.beginTransaction((err) => {
+        if (err) {
+            console.error(err);
+            return res.json("Transaction Error");
+        }
+
+        // Insertar en la tabla persona
+        const sqlPersona = "INSERT INTO `persona` (`Nombres`, `Apellido1`, `Apellido2`, `FechaNac`, `Correo`, `Telefono`) VALUES (?)";
+        const valuesPersona = [
+            req.body.Nombres,
+            req.body.Apellido1,
+            req.body.Apellido2,
+            req.body.FechaNac,
+            req.body.Correo,
+            req.body.Telefono
+        ];
+
+        db.query(sqlPersona, [valuesPersona], (err, result) => {
+            if (err) {
+                return db.rollback(() => {
+                    console.error(err);
+                    return res.json("Error inserting into persona");
+                });
+            }
+
+            // Obtener el ID_Persona recién insertado
+            const ID_Persona = result.insertId;
+
+            // Insertar en la tabla empleado utilizando el ID_Persona
+            const sqlEmpleado = "INSERT INTO `empleado` (`ID_Persona`, `Usuario`, `Contraseña`, `Tipo_Usuario`) VALUES (?, ?, ?, ?)";
+            const valuesEmpleado = [
+                ID_Persona,
+                req.body.Usuario,
+                req.body.Contraseña,
+                req.body.Tipo_Usuario 
+            ];
+
+            db.query(sqlEmpleado, valuesEmpleado, (err, data) => {
+                if (err) {
+                    return db.rollback(() => {
+                        console.error(err);
+                        return res.json("Error inserting into empleado");
+                    });
+                }
+
+                // Confirmar la transacción
+                db.commit((err) => {
+                    if (err) {
+                        return db.rollback(() => {
+                            console.error(err);
+                            return res.json("Transaction Commit Error");
+                        });
+                    }
+
+                    return res.json("Empleado created successfully");
+                });
+            });
+        });
+    });
+});
+
 app.post("/createCliente", (req, res) => {
     // Iniciar la transacción
     db.beginTransaction((err) => {
@@ -157,6 +220,26 @@ app.get("/readCliente", (req, res) => {
     });
 });
 
+app.get("/readEmpleado", (req, res) => {
+    const sql = `
+        SELECT persona.*, empleado.Usuario, empleado.Tipo_Usuario 
+        FROM persona 
+        INNER JOIN empleado 
+        ON persona.ID_Persona = empleado.ID_Persona
+    `;
+
+    db.query(sql, (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.json("Error");
+        }
+        
+        // Enviar la respuesta con los datos combinados de persona y empleado
+        return res.json(data);
+    });
+});
+
+
 
 
 
@@ -228,6 +311,46 @@ app.put('/updateCliente/:ID_Persona', (req, res) => {
     });
 });
 
+app.put('/updateEmpleado/:ID_Persona', (req, res) => {
+    const ID_Persona = req.params.ID_Persona;
+
+    // Consulta SQL para actualizar la tabla persona
+    const sqlPersona = "UPDATE `persona` SET `Nombres` = ?, `Apellido1` = ?, `Apellido2` = ?, `FechaNac` = ?, `Correo` = ?, `Telefono` = ? WHERE `ID_Persona` = ?";
+    
+    const valuesPersona = [
+        req.body.Nombres,
+        req.body.Apellido1,
+        req.body.Apellido2,
+        req.body.FechaNac,
+        req.body.Correo,
+        req.body.Telefono
+    ];
+
+    // Ejecutar la primera consulta para actualizar persona
+    db.query(sqlPersona, [...valuesPersona, ID_Persona], (err, data) => {
+        if (err) {
+            console.error(err); // Muestra el error en la consola
+            return res.json("Error updating persona");
+        }
+
+        // Consulta SQL para actualizar la tabla empleado
+        const sqlEmpleado = "UPDATE `empleado` SET `Usuario` = ?, `Contraseña` = ?, `Tipo_Usuario` = ? WHERE `ID_Persona` = ?";
+        const valuesEmpleado = [
+            req.body.Usuario,
+            req.body.Contraseña,
+            req.body.TipoUsuario
+        ];
+
+        // Ejecutar la segunda consulta para actualizar empleado
+        db.query(sqlEmpleado, [...valuesEmpleado, ID_Persona], (err, data) => {
+            if (err) {
+                console.error(err); // Muestra el error en la consola
+                return res.json("Error updating empleado");
+            }
+            return res.json("Empleado updated successfully");
+        });
+    });
+});
 
 
 app.put('/updateProducto/:Cod_Producto', (req, res) => {
@@ -280,7 +403,7 @@ app.delete('/deletePersona/:ID_Persona', (req, res) => {
     });
 });
 
-app.delete('/deleteCliente/:ID_Persona', (req, res) => {
+app.delete('/deleteEmpleado/:ID_Persona', (req, res) => {
     const ID_Persona = req.params.ID_Persona;
     console.log("ID_Persona to delete:", ID_Persona); // Verifica si el ID_Persona es correcto
 
@@ -292,8 +415,8 @@ app.delete('/deleteCliente/:ID_Persona', (req, res) => {
         }
 
         // Eliminar de la tabla cliente
-        const sqlDeleteCliente = "DELETE FROM `cliente` WHERE ID_Persona = ?";
-        db.query(sqlDeleteCliente, [ID_Persona], (err, data) => {
+        const sqlDeleteEmpleado = "DELETE FROM `empleado` WHERE ID_Persona = ?";
+        db.query(sqlDeleteEmpleado, [ID_Persona], (err, data) => {
             if (err) {
                 return db.rollback(() => {
                     console.error(err); // Muestra el error en la consola
