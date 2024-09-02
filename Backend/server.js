@@ -450,7 +450,52 @@ app.delete('/deleteEmpleado/:ID_Persona', (req, res) => {
     });
 });
 
+app.delete('/deleteCliente/:ID_Persona', (req, res) => {
+    const ID_Persona = req.params.ID_Persona;
+    console.log("ID_Persona to delete:", ID_Persona); // Verifica si el ID_Persona es correcto
 
+    // Iniciar la transacción
+    db.beginTransaction((err) => {
+        if (err) {
+            console.error(err);
+            return res.json("Transaction Error");
+        }
+
+        // Eliminar de la tabla cliente
+        const sqlDeleteCliente = "DELETE FROM `cliente` WHERE ID_Persona = ?";
+        db.query(sqlDeleteCliente, [ID_Persona], (err, data) => {
+            if (err) {
+                return db.rollback(() => {
+                    console.error(err); // Muestra el error en la consola
+                    return res.json("Error deleting from cliente");
+                });
+            }
+
+            // Eliminar de la tabla persona
+            const sqlDeletePersona = "DELETE FROM `persona` WHERE ID_Persona = ?";
+            db.query(sqlDeletePersona, [ID_Persona], (err, data) => {
+                if (err) {
+                    return db.rollback(() => {
+                        console.error(err); // Muestra el error en la consola
+                        return res.json("Error deleting from persona");
+                    });
+                }
+
+                // Confirmar la transacción
+                db.commit((err) => {
+                    if (err) {
+                        return db.rollback(() => {
+                            console.error(err); // Muestra el error en la consola
+                            return res.json("Transaction Commit Error");
+                        });
+                    }
+
+                    return res.json("Data DELETED SUCCESS");
+                });
+            });
+        });
+    });
+});
 app.delete('/deleteProducto/:Cod_Producto', (req, res) => {
     const Cod_Producto = req.params.Cod_Producto;
     console.log("Cod_Producto to delete:", Cod_Producto); // Verifica si el Cod_Producto es correcto
