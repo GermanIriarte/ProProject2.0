@@ -15,6 +15,7 @@ function UpdateEmpleados() {
     const {ID_Persona} = useParams();
 
     const navigate = useNavigate();
+    
     console.log("CODIGO PERSONA: ",ID_Persona)
 
     function handleSubmit(event) {

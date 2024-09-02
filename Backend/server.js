@@ -338,7 +338,7 @@ app.put('/updateEmpleado/:ID_Persona', (req, res) => {
         const valuesEmpleado = [
             req.body.Usuario,
             req.body.Contraseña,
-            req.body.TipoUsuario
+            req.body.Tipo_Usuario
         ];
 
         // Ejecutar la segunda consulta para actualizar empleado
