@@ -1,61 +1,204 @@
+/* Estilos generales */
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: #f0f0f0; /* Fondo gris claro */
+}
+
 .App {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #ffffff; /* Blanco */
+}
+
+.content {
+  display: flex;
+  flex: 1; /* Asegura que el contenido ocupe el espacio disponible */
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #333; /* Negro */
+  color: white;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: fixed; /* Sidebar fijo a la izquierda */
+  height: 100vh; /* Ocupa toda la altura de la ventana */
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar ul li {
+  margin-bottom: 10px;
+}
+
+.sidebar ul li button {
+  width: 100%;
+  padding: 10px;
+  background-color: #444;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.sidebar ul li button:hover {
+  background-color: #555;
+}
+
+.logout-button {
+  margin-top: 20px;
+  background-color: #e74c3c; /* Rojo */
+  border: none;
+  padding: 10px;
+  width: 100%;
+  color: white;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  background-color: #c82333; /* Rojo oscuro */
+}
+
+.historial {
+  margin-left: 250px; /* Desplaza el contenido para que no quede debajo del sidebar */
+  flex: 1;
+  padding: 20px;
+  background-color: #d3d3d3; /* Gris claro */
+  border-radius: 8px;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 90vh;
-  background-color: #ffffff; /* Cambia el valor a cualquier color que desees */
+  box-sizing: border-box;
+  position: relative;
 }
 
-.container {
+.historial-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
+  position: relative;
+}
+
+.cuadro-azul {
+  background-color: #007bff; /* Azul */
+  width: 100%;
+  max-width: 600px;
+  height: 300px; /* Tamaño fijo */
+  position: relative;
   display: flex;
-  width: 100%; /* Ajusta según tus necesidades */
-  height: 70%; /* Ajusta según tus necesidades */
-  border: 1px solid #ffffff; /* Opcional: borde alrededor del contenedor principal */
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.cuadro-gris {
+  background-color: #d3d3d3; /* Gris */
+  width: 90%;
+  max-width: 600px;
+  height: 200px; /* Tamaño fijo */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  border-radius: 8px;
+}
+
+.cerrar-boton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #e74c3c; /* Rojo */
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.cerrar-boton:hover {
+  background-color: #c82333; /* Rojo oscuro */
 }
 
 .login-container {
-  flex: 1;
-  border-right: 1px solid #ccc; /* Línea vertical a la derecha del formulario */
-  padding: 2rem;
-  box-sizing: border-box;
-}
-
-.login-form {
-  max-width: 270px;
   margin: auto;
-}
-
-.login-form div {
-  margin-bottom: 1rem;
-}
-
-.login-form label {
-  display: block;
-  margin-bottom: 0.5rem;
-}
-
-.login-form input,
-.login-form select {
+  padding: 2rem;
+  max-width: 400px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
   width: 100%;
-  padding: 0.5rem;
-  box-sizing: border-box;
 }
 
-.login-form button {
-  padding: 0.5rem 1rem;
-  background-color: #007bff;
+.login-container h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.login-container input,
+.login-container select {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.login-container button {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #333; /* Negro */
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
 
-.login-form button:hover {
-  background-color: #0056b3;
+.login-container button:hover {
+  background-color: #555; /* Gris oscuro */
 }
 
-.content {
-  flex: 2; /* Ocupa el doble de espacio que el formulario */
-  padding: 1rem;
-  box-sizing: border-box;
+.skip-button {
+  margin-top: 1rem;
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #007bff; /* Azul */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.skip-button:hover {
+  background-color: #0056b3; /* Azul oscuro */
+}
+
+.nav-button {
+  margin: 1rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #333; /* Negro */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.nav-button:hover {
+  background-color: #555; /* Gris oscuro */
 }

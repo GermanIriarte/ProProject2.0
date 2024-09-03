@@ -1,40 +1,72 @@
 .container {
     display: flex;
     height: 100vh;
-    background-color: #007bff;
+    background-color: #f8f9fa;
     justify-content: center;
     align-items: center;
+    padding: 16px; /* Añadir un poco de espacio alrededor */
 }
 
 .form-container {
-    width: 50%;
+    width: 100%;
+    max-width: 360px; /* Limitar el ancho máximo */
     background-color: white;
     border-radius: 8px;
-    padding: 24px;
+    padding: 20px; /* Padding ajustado para mayor espacio interno */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra más prominente */
+    box-sizing: border-box; /* Incluir padding y border en el ancho total */
+}
+
+h2 {
+    margin-bottom: 20px; /* Espaciado debajo del título */
+    font-size: 18px; /* Tamaño de fuente del título */
+    text-align: center; /* Centrar el texto del título */
 }
 
 .mb-2 {
-    margin-bottom: 16px;
+    margin-bottom: 16px; /* Espaciado entre los campos */
 }
 
 .form-control {
     width: 100%;
-    padding: 8px;
-    margin-top: 8px;
+    padding: 10px; /* Padding mejorado para mayor comodidad */
+    margin-top: 4px; /* Espaciado superior ajustado */
     border-radius: 4px;
-    border: 1px solid #ccc;
+    border: 1px solid #ced4da;
+    font-size: 14px; /* Tamaño de fuente ajustado */
+    box-sizing: border-box; /* Incluir padding y border en el ancho total */
 }
 
 .btn-success {
-    background-color: #28a745;
-    border: none;
-    padding: 10px 20px;
+    background-color: #007bff; /* Color de fondo azul */
+    border: 1px solid #007bff; /* Borde del mismo color que el fondo */
+    padding: 12px 24px; /* Padding ajustado para un tamaño más cómodo */
     color: white;
-    border-radius: 4px;
+    border-radius: 5px; /* Radio de borde ligeramente mayor */
     cursor: pointer;
-    transition: background-color 0.3s;
+    font-size: 14px; /* Tamaño de fuente ajustado */
+    font-weight: bold; /* Texto en negrita */
+    text-transform: uppercase; /* Texto en mayúsculas */
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.2s;
+    display: block; /* Asegurar que el botón se muestre como bloque */
+    width: 100%; /* Botón ocupa el ancho completo del contenedor */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil */
 }
 
 .btn-success:hover {
-    background-color: #218838;
+    background-color: #0056b3; /* Color de fondo más oscuro en hover */
+    border-color: #0056b3; /* Borde del mismo color que el fondo en hover */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Sombra más prominente en hover */
+    transform: translateY(-2px); /* Efecto de elevación al pasar el cursor */
 }
+
+.btn-success:active {
+    background-color: #004494; /* Color 
+
+
+.btn-success:hover {
+    background-color: #218838;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra más prominente en hover */
+}
+
+

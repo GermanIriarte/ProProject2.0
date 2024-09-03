@@ -1,74 +1,77 @@
 .persona-container {
     display: flex;
     height: 100vh;
-    background-color: #007bff; /* bg-primary */
+    background-color: #f8f9fa; /* Fondo más claro */
     justify-content: center;
     align-items: center;
 }
 
 .persona-content {
-    width: 95%;
+    width: 90%;
+    max-width: 1000px; /* Máximo ancho para pantallas grandes */
     background-color: white;
-    border-radius: 10px;
-    padding: 3rem;
-}
-
-.persona-add-btn {
-    background-color: #28a745; /* btn-success */
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    margin-bottom: 1rem;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.persona-add-btn:hover {
-    background-color: #218838; /* Darker shade on hover */
-}
-.persona-update-btn{
-    background-color: rgb(14, 14, 230); /* btn-success */
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    margin-bottom: 1rem;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.persona-update-btn:hover {
-    background-color: #030e6e; /* Darker shade on hover */
-}
-
-.persona-delete-btn{
-    background-color: rgb(255, 0, 0); /* btn-success */
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    margin-bottom: 1rem;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.persona-delete-btn:hover {
-    background-color: #b31717; /* Darker shade on hover */
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .persona-table {
     width: 100%;
     border-collapse: collapse;
+    margin-bottom: 1rem;
 }
 
 .persona-table th, .persona-table td {
     border: 1px solid #ddd;
-    padding: 0.75rem;
+    padding: 8px;
     text-align: left;
+    font-size: 12px;
 }
 
 .persona-table th {
-    background-color: #f8f9fa;
+    background-color: #e9ecef; /* Fondo más claro para los encabezados */
+    font-weight: bold;
 }
 
 .persona-table tr:nth-child(even) {
-    background-color: #f2f2f2;
+    background-color: #f9f9f9; /* Fondo gris claro para filas pares */
+}
+
+.persona-table tr:hover {
+    background-color: #f1f1f1; /* Fondo gris más oscuro al pasar el ratón sobre la fila */
+}
+
+.persona-btns {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.persona-btns button {
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+
+.persona-add-btn {
+    background-color: #28a745; /* btn-success */
+    color: white;
+}
+
+.persona-add-btn:hover {
+    background-color: #218838; /* Tono más oscuro al hacer hover */
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    transform: scale(1.02);
+}
+
+.persona-update-btn {
+    background-color: #007bff; /* btn-update */
+    color: white;
+}
+
+.persona-update-btn:hover {
+    background-color: #0056b3; /
 }

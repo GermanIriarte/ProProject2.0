@@ -9,19 +9,19 @@ function CreateClientes() {
     const [Apellido2, SetLastName2] = useState('');
     const [FechaNac, SetDate] = useState('');
     const [Correo, SetEmail] = useState('');
-    const [Telefono, SetPhone] = useState('');  
-    const [Puntos, SetPoints] = useState('');  
+    const [Telefono, SetPhone] = useState('');
+    const [Puntos, SetPoints] = useState('');
     const navigate = useNavigate();
 
     function handleSubmit(event) {
         event.preventDefault();
-        const formattedDate = new Date(FechaNac).toISOString().split('T')[0];  // Esto asegura el formato 'YYYY-MM-DD'
+        const formattedDate = new Date(FechaNac).toISOString().split('T')[0]; // Asegura el formato 'YYYY-MM-DD'
         axios.post('http://localhost:8081/createCliente', {
-            Nombres, 
-            Apellido1, 
-            Apellido2, 
+            Nombres,
+            Apellido1,
+            Apellido2,
             FechaNac: formattedDate,
-            Correo, 
+            Correo,
             Telefono,
             Puntos
         })
@@ -33,74 +33,83 @@ function CreateClientes() {
     }
 
     return (
-        <div className='container'>
-            <div className='form-container'>
+        <div className='persona-container'>
+            <div className='persona-content'>
                 <form onSubmit={handleSubmit}>
                     <h2>Add Cliente</h2>
                     <div className='mb-2'>
-                        <label htmlFor=''>Name</label>
+                        <label htmlFor='name'>Name</label>
                         <input 
                             type='text' 
+                            id='name'
                             placeholder='Enter Name' 
                             className='form-control'
                             onChange={e => Setname(e.target.value)} 
                         />
                     </div>
                     <div className='mb-2'>
-                        <label htmlFor=''>Apellido1</label>
+                        <label htmlFor='apellido1'>Apellido1</label>
                         <input 
                             type='text' 
+                            id='apellido1'
                             placeholder='Enter Apellido1' 
                             className='form-control'
                             onChange={e => SetLastName1(e.target.value)} 
                         />
                     </div>
                     <div className='mb-2'>
-                        <label htmlFor=''>Apellido2</label>
+                        <label htmlFor='apellido2'>Apellido2</label>
                         <input 
                             type='text' 
+                            id='apellido2'
                             placeholder='Enter Apellido2' 
                             className='form-control'
                             onChange={e => SetLastName2(e.target.value)} 
                         />
                     </div>
                     <div className='mb-2'>
-                        <label htmlFor=''>Birth Day</label>
+                        <label htmlFor='fechaNac'>Birth Day</label>
                         <input 
                             type='date' 
+                            id='fechaNac'
                             placeholder='Enter Birth Date' 
                             className='form-control'
                             onChange={e => SetDate(e.target.value)} 
                         />
                     </div>
                     <div className='mb-2'>
-                        <label htmlFor=''>Email</label>
+                        <label htmlFor='email'>Email</label>
                         <input 
                             type='email' 
+                            id='email'
                             placeholder='Enter Email' 
                             className='form-control'
                             onChange={e => SetEmail(e.target.value)} 
                         />
                     </div>
                     <div className='mb-2'>
-                        <label htmlFor=''>Telefono</label>
+                        <label htmlFor='telefono'>Telefono</label>
                         <input 
                             type='text' 
+                            id='telefono'
                             placeholder='Enter Phone' 
                             className='form-control'
                             onChange={e => SetPhone(e.target.value)}  
                         />
                     </div>
                     <div className='mb-2'>
-                        <label htmlFor=''>Puntos</label>
+                        <label htmlFor='puntos'>Puntos</label>
                         <input 
                             type='number' 
+                            id='puntos'
                             placeholder='Enter Points' 
                             className='form-control'
                             onChange={e => SetPoints(e.target.value)}  
                         />
                     </div>
-                    <button className='btn btn-success'>Submit</button>
+                    <div className='persona-btns'>
+                        <button type='submit' className='persona-add-btn'>Submit</button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -108,3 +117,4 @@ function CreateClientes() {
 }
 
 export default CreateClientes;
+
