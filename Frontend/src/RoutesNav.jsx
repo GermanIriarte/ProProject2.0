@@ -17,11 +17,7 @@ import UpdateClientes from './UpdateClientes';
 import Empleados from './Empleados';
 import CreateEmpleados from './CreateEmpleados';
 import UpdateEmpleados from './UpdateEmpleados';
-
-
-
-
-
+import Login from './login';
 
 
 
@@ -31,7 +27,8 @@ function RoutesNav(){
         <div className='RoutesNav'>
             <BrowserRouter>
                 <Routes>
-                    <Route path='/' element= {<App />}></Route>
+                    <Route path='/' element= {<Login />}></Route>
+                    <Route path='/app' element= {<App />}></Route>
                     <Route path='/home' element= {<Persona />}></Route>
                     <Route path='/create' element= {<CreatePersona />}></Route>
                     <Route path='home/update/:ID_Persona' element= {<UpdatePersona />}></Route>

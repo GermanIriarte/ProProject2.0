@@ -522,7 +522,21 @@ app.delete('/deleteProveedor/:Cod_Proveedor', (req, res) => {
     });
 });
 
+app.post('/login', (req,res)=>{
+    const sql = "SELECT * FROM Empleado WHERE Usuario = ? AND Contraseña = ?";
+    db.query(sql, [req.body.Usuario,req.body.Contraseña ], (err,data)=>{
+        if(err){
+            return res.json("Error");
+        }
+        if(data.length > 0) {
+            return res.json("Success");
 
+        } else{
+            
+            return res.json("Failed");
+        }
+    })
+})
 
 app.listen(8081,() => {
     console.log("Listening ");
