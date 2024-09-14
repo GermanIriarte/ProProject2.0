@@ -41,7 +41,7 @@ function Producto() {
                                     <td>{data.Cantidad}</td>
                                     <td>{data.Precio}</td>
                                     <td>{data.Categoria}</td>
-                                    <td><Link to={`updateProducto/${data.Cod_Producto}`} className='btn btn-primary'>Update</Link></td>
+                                    <td><Link to={`/updateProducto/${data.Cod_Producto}`} className='btn btn-primary'>Update</Link></td>
                                     <td><button className="persona-delete-btn" onClick={() => handleDelete(data.Cod_Producto)}>Delete</button></td>
                                 </tr>
                             ))

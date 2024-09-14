@@ -31,19 +31,20 @@ function RoutesNav(){
                     <Route path='/app' element= {<App />}></Route>
                     <Route path='/home' element= {<Persona />}></Route>
                     <Route path='/create' element= {<CreatePersona />}></Route>
-                    <Route path='home/update/:ID_Persona' element= {<UpdatePersona />}></Route>
+                    <Route path='home/update/:ID_Persona' element={<UpdatePersona />} />
                     <Route path='/homeProducto' element= {<Producto />}></Route>
                     <Route path='/createProducto' element= {<CreateProducto />}></Route>
-                    <Route path='/updateProducto/:Cod_Producto' element= {<UpdateProducto />}></Route>
+                    <Route path='/updateProducto/:Cod_Producto' element={<UpdateProducto />} />
                     <Route path='/homeProveedor' element= {<Proveedor />}></Route>
                     <Route path='/createProveedor' element= {<CreateProveedor />}></Route>
-                    <Route path='/updateProveedor/:Cod_Proveedor' element= {<UpdateProveedor />}></Route>
+                    <Route path='/updateProveedor/:Cod_Proveedor' element={<UpdateProveedor />} />
                     <Route path='/Clientes' element= {<Clientes />}></Route>
                     <Route path='/createClientes' element= {<CreateClientes />}></Route>
-                    <Route path='/updateClientes/:ID_Persona' element= {<UpdateClientes />}></Route>
+                    <Route path='/updateClientes/:ID_Persona' element={<UpdateClientes />} />
                     <Route path='/Empleados' element= {<Empleados />}></Route>
                     <Route path='/createEmpleados' element= {<CreateEmpleados />}></Route>
-                    <Route path='/updateEmpleados/:ID_Persona' element= {<UpdateEmpleados />}></Route>
+                    <Route path='/updateEmpleados/:ID_Persona' element={<UpdateEmpleados />} />
+
                     
                     
                 </Routes>

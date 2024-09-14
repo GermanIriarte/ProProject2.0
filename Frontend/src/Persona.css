@@ -1,7 +1,8 @@
+/* Estilos generales */
 .persona-container {
     display: flex;
     height: 100vh;
-    background-color: #f8f9fa; /* Fondo más claro */
+    background-color: #f8f9fa; 
     justify-content: center;
     align-items: center;
 }
@@ -12,7 +13,7 @@
     background-color: white;
     border-radius: 8px;
     padding: 1rem;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(255, 0, 0, 0.1);
 }
 
 .persona-table {
@@ -73,5 +74,53 @@
 }
 
 .persona-update-btn:hover {
-    background-color: #0056b3; /
+    background-color: #0056b3;
+}
+
+/* --------------------------- */
+/* Estilos para el modo oscuro  */
+/* --------------------------- */
+
+.dark-mode .persona-container {
+    background-color: #2c2c2c; /* Fondo oscuro */
+}
+
+.dark-mode .persona-content {
+    background-color: #3a3a3a; /* Fondo oscuro del contenedor */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.dark-mode .persona-table th {
+    background-color: #444; /* Fondo más oscuro para los encabezados */
+    color: #e0e0e0; /* Texto claro */
+}
+
+.dark-mode .persona-table td {
+    background-color: #555; /* Fondo oscuro para las celdas */
+    color: #e0e0e0; /* Texto claro */
+}
+
+.dark-mode .persona-table tr:nth-child(even) {
+    background-color: #4a4a4a; /* Fondo oscuro para filas pares */
+}
+
+.dark-mode .persona-table tr:hover {
+    background-color: #666; /* Fondo más oscuro al pasar el ratón */
+}
+
+.dark-mode .persona-add-btn {
+    background-color: #28a745; /* Color verde para botones de agregar */
+}
+
+.dark-mode .persona-update-btn {
+    background-color: #007bff; /* Color azul para botones de actualizar */
+}
+
+.dark-mode .persona-btns button {
+    background-color: #444; /* Fondo oscuro para botones */
+    color: #e0e0e0;
+}
+
+.dark-mode .persona-btns button:hover {
+    background-color: #666; /* Fondo más oscuro al hacer hover */
 }

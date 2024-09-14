@@ -53,7 +53,7 @@ function Empleados() {
                                     <td>{data.Telefono}</td>
                                     <td>{data.Usuario}</td>  {/* Agregar el campo Usuario */}
                                     <td>{data.Tipo_Usuario}</td>  {/* Agregar el campo Tipo_Usuario */}
-                                    <td><Link to={`updateEmpleados/${data.ID_Persona}`} className='btn btn-primary'>Update</Link></td>
+                                    <td><Link to={`/updateEmpleados/${data.ID_Persona}`} className='btn btn-primary'>Update</Link></td>
                                     <td><button className="persona-delete-btn" onClick={() => handleDelete(data.ID_Persona)}>Delete</button></td>
                                 </tr>
                             ))

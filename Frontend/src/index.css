@@ -6,13 +6,13 @@
 }
 
 body {
-  background-color: #ffd3d5; /* Cambia el valor a cualquier color que desees */
-  margin: 100; /* Opcional: Elimina los márgenes predeterminados */
-  font-family: Arial, sans-serif; /* Opcional: Cambia la fuente si lo deseas */
+  background-color: #ffd3d5; 
+  margin: 300; 
+  font-family: Arial, sans-serif; 
 }
 
 body {
-  background: linear-gradient(to right, #ddbdb4, #d7b194); /* Cambia los colores del gradiente según tus preferencias */
+  background: linear-gradient(to right, #595858, #838281); 
   margin: 0;
   font-family: Arial, sans-serif;
 }

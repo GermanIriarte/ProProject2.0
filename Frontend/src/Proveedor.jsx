@@ -35,7 +35,7 @@ function Proveedor() {
                                 <tr key={i}>
                                     <td>{data.Cod_Proveedor}</td>
                                     <td>{data.Nombre_Proveedor}</td>
-                                    <td><Link to={`updateProveedor/${data.Cod_Proveedor}`} className='btn btn-primary'>Update</Link></td>
+                                    <td><Link to={`/updateProveedor/${data.Cod_Proveedor}`} className='btn btn-primary'>Update</Link></td>
                                     <td><button className="persona-delete-btn" onClick={() => handleDelete(data.Cod_Proveedor)}>Delete</button></td>
                                 </tr>
                             ))

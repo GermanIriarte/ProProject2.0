@@ -2,14 +2,14 @@
 body {
   margin: 0;
   font-family: 'Arial', sans-serif;
-  background-color: #f0f0f0; /* Fondo gris claro */
+  background-color: #f0f0f0; 
 }
 
 .App {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background-color: #ffffff; /* Blanco */
+  background-color: #ffffff; 
 }
 
 .content {
@@ -19,7 +19,7 @@ body {
 
 .sidebar {
   width: 250px;
-  background-color: #333; /* Negro */
+  background-color: #333; 
   color: white;
   padding: 20px;
   display: flex;
@@ -57,7 +57,7 @@ body {
 
 .logout-button {
   margin-top: 20px;
-  background-color: #e74c3c; /* Rojo */
+  background-color: #e74c3c; 
   border: none;
   padding: 10px;
   width: 100%;
@@ -66,14 +66,14 @@ body {
 }
 
 .logout-button:hover {
-  background-color: #c82333; /* Rojo oscuro */
+  background-color: #c82333; 
 }
 
 .historial {
   margin-left: 250px; /* Desplaza el contenido para que no quede debajo del sidebar */
   flex: 1;
   padding: 20px;
-  background-color: #d3d3d3; /* Gris claro */
+  background-color: #d3d3d3; 
   border-radius: 8px;
   display: flex;
   justify-content: center;
@@ -82,123 +82,51 @@ body {
   position: relative;
 }
 
-.historial-content {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 600px;
-  position: relative;
+/* Modo oscuro */
+.dark-mode {
+  background-color: #181818;
+  color: #e0e0e0;
 }
 
-.cuadro-azul {
-  background-color: #007bff; /* Azul */
-  width: 100%;
-  max-width: 600px;
-  height: 300px; /* Tamaño fijo */
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-sizing: border-box;
+.dark-mode .sidebar {
+  background-color: #222; /* Sidebar más oscuro */
 }
 
-.cuadro-gris {
-  background-color: #d3d3d3; /* Gris */
-  width: 90%;
-  max-width: 600px;
-  height: 200px; /* Tamaño fijo */
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-sizing: border-box;
-  border-radius: 8px;
+.dark-mode .sidebar ul li button {
+  background-color: #333;
 }
 
-.cerrar-boton {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background-color: #e74c3c; /* Rojo */
-  border: none;
-  color: white;
-  padding: 5px 10px;
-  cursor: pointer;
-  border-radius: 3px;
+.dark-mode .sidebar ul li button:hover {
+  background-color: #444;
 }
 
-.cerrar-boton:hover {
-  background-color: #c82333; /* Rojo oscuro */
+.dark-mode .logout-button {
+  background-color: #e74c3c;
 }
 
-.login-container {
-  margin: auto;
-  padding: 2rem;
-  max-width: 400px;
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
-  width: 100%;
+.dark-mode .historial {
+  background-color: #2c2c2c; 
 }
 
-.login-container h2 {
-  text-align: center;
-  margin-bottom: 2rem;
-}
 
-.login-container input,
-.login-container select {
-  width: 100%;
-  padding: 0.75rem;
-  margin-bottom: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.login-container button {
-  width: 100%;
-  padding: 0.75rem;
-  background-color: #333; /* Negro */
+.toggle-dark-mode {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #007bff; 
   color: white;
   border: none;
+  padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
 }
 
-.login-container button:hover {
-  background-color: #555; /* Gris oscuro */
+.toggle-dark-mode:hover {
+  background-color: #0056b3;
 }
 
-.skip-button {
-  margin-top: 1rem;
-  width: 100%;
-  padding: 0.75rem;
-  background-color: #007bff; /* Azul */
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.skip-button:hover {
-  background-color: #0056b3; /* Azul oscuro */
-}
-
-.nav-button {
-  margin: 1rem;
-  padding: 0.75rem 1.5rem;
-  background-color: #333; /* Negro */
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.nav-button:hover {
-  background-color: #555; /* Gris oscuro */
+/* Para colocar el botón en la parte superior derecha en lugar de inferior derecha */
+.toggle-dark-mode.top {
+  top: 20px;
+  bottom: unset;
 }

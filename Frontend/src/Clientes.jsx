@@ -51,7 +51,7 @@ function Clientes() {
                                     <td>{data.Correo}</td>
                                     <td>{data.Telefono}</td>
                                     <td>{data.Puntos !== null ? data.Puntos : 'No Disponible'}</td>
-                                    <td><Link to={`updateClientes/${data.ID_Persona}`} className='btn btn-primary'>Update</Link></td>
+                                    <td><Link to={`/updateClientes/${data.ID_Persona}`} className='btn btn-primary'>Update</Link></td>
                                     <td><button className="persona-delete-btn" onClick={() => handleDelete(data.ID_Persona)}>Delete</button></td>
                                 </tr>
                             ))
