@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import axios from 'axios';
-import './Persona.css';
+import './Producto.css';  // Asegúrate de que el archivo CSS tenga los estilos que definiremos
 import { Link } from "react-router-dom";
 
 function Producto() {
@@ -45,51 +45,52 @@ function Producto() {
         <div className='container mt-4'>
             <div className='d-flex justify-content-between align-items-center mb-4'>
                 <select className='form-select' onChange={handleCategoryChange} value={categoria}>
-                    <option value="">All</option>
-                    <option value="Fruits">Fruits</option>
-                    <option value="Clothing">Clothing</option>
-                    <option value="Books">Books</option>
+                    <option value="">Todas</option>
+                    <option value="Fruits">Frutas</option>
+                    <option value="Clothing">Ropa</option>
+                    <option value="Books">Libros</option>
                     <option value="Aseo">Aseo</option>
                 </select>
-                <Link to="/createProducto" className='btn btn-primary'>Add +</Link>
+                <Link to="/createProducto" className='btn btn-primary'>Agregar +</Link>
             </div>
 
             {loading ? (
-                <p>Cargando productos...</p>
+                <p className='text-center'>Cargando productos...</p>
             ) : error ? (
-                <p className='text-danger'>{error}</p>
+                <p className='text-center text-danger'>{error}</p>
             ) : (
-                <table className='table table-striped table-bordered'>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Cantidad</th>
-                            <th>Precio</th>
-                            <th>Categoria</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {productos.map((data) => (
-                            <tr key={data.Cod_Producto}>
-                                <td>{data.Cod_Producto}</td>
-                                <td>{data.Nombre}</td>
-                                <td>{data.Cantidad}</td>
-                                <td>{data.Precio}</td>
-                                <td>{data.Categoria}</td>
-                                <td>
-                                    <Link to={`updateProducto/${data.Cod_Producto}`} className='btn btn-info me-2'>Update</Link>
-                                    <button className='btn btn-danger' onClick={() => handleDelete(data.Cod_Producto)}>Delete</button>
-                                </td>
+                <div className="table-responsive">
+                    <table className='table table-hover table-bordered'>
+                        <thead className='thead-dark'>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Cantidad</th>
+                                <th>Precio</th>
+                                <th>Categoría</th>
+                                <th>Acciones</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {productos.map((data) => (
+                                <tr key={data.Cod_Producto}>
+                                    <td>{data.Cod_Producto}</td>
+                                    <td>{data.Nombre}</td>
+                                    <td>{data.Cantidad}</td>
+                                    <td>${data.Precio.toFixed(2)}</td>
+                                    <td>{data.Categoria}</td>
+                                    <td>
+                                        <Link to={`updateProducto/${data.Cod_Producto}`} className='btn btn-info btn-sm me-2'>Actualizar</Link>
+                                        <button className='btn btn-danger btn-sm' onClick={() => handleDelete(data.Cod_Producto)}>Eliminar</button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             )}
         </div>
     );
 }
 
 export default Producto;
-

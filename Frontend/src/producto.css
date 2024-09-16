@@ -1,0 +1,77 @@
+/* General container styling */
+.container {
+    padding: 20px;
+}
+
+/* Table styling */
+.table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+}
+
+.table th, .table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #dee2e6;
+}
+
+.table thead {
+    background-color: #343a40;
+    color: #fff;
+}
+
+.table thead th {
+    font-weight: bold;
+}
+
+.table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+/* Button styling */
+.btn {
+    font-size: 0.875rem; /* Asegura que todos los botones tengan el mismo tamaño de fuente */
+    padding: 0.375rem 0.75rem; /* Ajusta el padding para igualar el tamaño del botón */
+    border-radius: 0.25rem; /* Bordes redondeados */
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+}
+
+.btn-info {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+}
+
+.btn-info:hover {
+    background-color: #117a8b;
+    border-color: #107a8b;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+
+/* Botones de tamaño uniforme */
+.btn-sm {
+    font-size: 0.75rem; /* Tamaño de fuente más pequeño */
+    padding: 0.25rem 0.5rem; /* Padding más pequeño */
+}
