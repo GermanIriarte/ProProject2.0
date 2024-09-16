@@ -523,6 +523,7 @@ app.delete('/deleteProveedor/:Cod_Proveedor', (req, res) => {
 });
 
 app.post('/login', (req,res)=>{
+    console.log("probando");
     const sql = "SELECT * FROM Empleado WHERE Usuario = ? AND Contraseña = ?";
     db.query(sql, [req.body.Usuario,req.body.Contraseña ], (err,data)=>{
         if(err){
@@ -537,6 +538,31 @@ app.post('/login', (req,res)=>{
         }
     })
 })
+app.get('/Categoria/:categoria?', (req, res) => { // Nota el '?' al final del parámetro
+    console.log("Backkkk");
+    const categoria = req.params.categoria;
+    console.log(categoria);
+
+    let sql = "SELECT * FROM productos";
+    const params = [];
+
+    if (categoria && categoria !== 'All') {
+        sql += " WHERE Categoria = ?";
+        params.push(categoria);
+    }
+
+    db.query(sql, params, (err, data) => {
+        if (err) {
+            console.error("Error en la consulta SQL:", err);
+            return res.status(500).json("Error");
+        }
+        console.log(data);
+        return res.json(data);
+    });
+});
+
+
+
 
 app.listen(8081,() => {
     console.log("Listening ");
