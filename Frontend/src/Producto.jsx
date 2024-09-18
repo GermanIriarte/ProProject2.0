@@ -61,7 +61,7 @@ function Producto() {
             ) : (
                 <div className="table-responsive">
                     <table className='table table-hover table-bordered'>
-                        <thead className='thead-dark'>
+                        <thead>
                             <tr>
                                 <th>ID</th>
                                 <th>Nombre</th>
@@ -80,7 +80,7 @@ function Producto() {
                                     <td>${data.Precio.toFixed(2)}</td>
                                     <td>{data.Categoria}</td>
                                     <td>
-                                        <Link to={`updateProducto/${data.Cod_Producto}`} className='btn btn-info btn-sm me-2'>Actualizar</Link>
+                                        <Link to={`/UpdateProducto/${data.Cod_Producto}`} className='btn btn-info btn-sm me-2'>Actualizar</Link>
                                         <button className='btn btn-danger btn-sm' onClick={() => handleDelete(data.Cod_Producto)}>Eliminar</button>
                                     </td>
                                 </tr>

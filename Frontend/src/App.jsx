@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react';  // Asegúrate de importar useState
 import { useNavigate } from 'react-router-dom';  // Importar useNavigate
 import Producto from './Producto';  
 import Proveedor from './Proveedor';  
@@ -62,4 +62,3 @@ function App() {
 }
 
 export default App;
-

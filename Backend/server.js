@@ -193,6 +193,24 @@ app.get("/readProductos",(req,res) =>{
     })
 })
 
+app.get('/readProducto', (req, res) => {
+    const { Cod_Producto } = req.query;
+
+    // Consulta SQL para obtener el producto por su código
+    const sql = 'SELECT * FROM productos WHERE Cod_Producto = ?';
+
+    db.query(sql, [Cod_Producto], (err, result) => {
+        if (err) {
+            console.error('Error al obtener el producto:', err);
+            res.status(500).json({ error: 'Error al obtener el producto' });
+        } else if (result.length === 0) {
+            res.status(404).json({ error: 'Producto no encontrado' });
+        } else {
+            res.json(result);
+        }
+    });
+});
+
 app.get("/readPersona",(req,res) =>{
     const sql = "SELECT * FROM persona";
     db.query(sql, (err,data) => {
@@ -200,6 +218,33 @@ app.get("/readPersona",(req,res) =>{
         return res.json(data);
     })
 })
+
+app.get('/readPersonaCedula', (req, res) => { //dada una cedula
+    const { ID_Persona } = req.query;  // Obtener la cédula desde los parámetros de la query
+    console.log('Consultando datos del empleado con cédula:', ID_Persona);
+
+    const sql = `
+        SELECT p.ID_Persona, p.Nombres, p.Apellido1, p.Apellido2, p.FechaNac, p.Correo, p.Telefono, 
+               e.Usuario, e.Contraseña, e.Tipo_Usuario
+        FROM Persona p
+        LEFT JOIN Empleado e ON p.ID_Persona = e.ID_Persona
+        WHERE p.ID_Persona = ?
+    `;
+
+    db.query(sql, [ID_Persona], (err, result) => {
+        if (err) {
+            console.error('Error al consultar empleado:', err);
+            return res.status(500).send('Error al consultar empleado');
+        }
+
+        if (result.length > 0) {
+            res.json(result);  // Enviar los datos del empleado
+        } else {
+            res.status(404).send('Empleado no encontrado');  // Manejar el caso en que no se encuentre el empleado
+        }
+    });
+});
+
 
 app.get("/readCliente", (req, res) => {
     const sql = `
@@ -221,6 +266,25 @@ app.get("/readCliente", (req, res) => {
 });
 
 app.get("/readEmpleado", (req, res) => {
+    const sql = `
+        SELECT persona.*, empleado.Usuario, empleado.Tipo_Usuario 
+        FROM persona 
+        INNER JOIN empleado 
+        ON persona.ID_Persona = empleado.ID_Persona
+    `;
+
+    db.query(sql, (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.json("Error");
+        }
+        
+        // Enviar la respuesta con los datos combinados de persona y empleado
+        return res.json(data);
+    });
+});
+
+app.get("/readPersona", (req, res) => {
     const sql = `
         SELECT persona.*, empleado.Usuario, empleado.Tipo_Usuario 
         FROM persona 
@@ -353,7 +417,7 @@ app.put('/updateEmpleado/:ID_Persona', (req, res) => {
 });
 
 
-app.put('/updateProducto/:Cod_Producto', (req, res) => {
+app.put('/ProductoUpdate/:Cod_Producto', (req, res) => {
     const Cod_Producto = req.params.Cod_Producto;
     
     const sql = "UPDATE `productos` SET `Nombre` = ?, `Cantidad` = ?, `Precio` = ?, `Categoria` = ? where Cod_Producto = ?";
@@ -557,6 +621,26 @@ app.get('/Categoria/:categoria?', (req, res) => { // Nota el '?' al final del pa
             return res.status(500).json("Error");
         }
         console.log(data);
+        return res.json(data);
+    });
+});
+
+app.get('/readEmpleadoCedula', (req, res) => {
+    const { ID_Persona } = req.query;
+
+    let sql = "SELECT * FROM Persona";
+    const params = [];
+
+    if (ID_Persona) {
+        sql += " WHERE ID_Persona = ?";
+        params.push(ID_Persona);
+    }
+
+    db.query(sql, params, (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json("Error al obtener los empleado");
+        }
         return res.json(data);
     });
 });

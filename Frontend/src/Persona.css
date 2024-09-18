@@ -2,7 +2,7 @@
 .persona-container {
     display: flex;
     height: 100vh;
-    background-color: #f8f9fa; 
+    background-color: #f8f9fa;
     justify-content: center;
     align-items: center;
 }
@@ -13,7 +13,7 @@
     background-color: white;
     border-radius: 8px;
     padding: 1rem;
-    box-shadow: 0 4px 8px rgba(255, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .persona-table {
@@ -123,4 +123,16 @@
 
 .dark-mode .persona-btns button:hover {
     background-color: #666; /* Fondo más oscuro al hacer hover */
+}
+
+.search-container {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: flex-start; /* Alinea en la parte superior */
+    gap: 10px; /* Espacio entre los elementos */
+    margin-bottom: 20px; /* Espacio debajo del contenedor de búsqueda */
+}
+
+.search-container input {
+    width: 300px; /* Ajusta el ancho según sea necesario */
 }

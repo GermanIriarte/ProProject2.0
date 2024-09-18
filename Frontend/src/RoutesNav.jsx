@@ -28,6 +28,7 @@ function RoutesNav(){
             <BrowserRouter>
                 <Routes>
                     <Route path='/' element= {<Login />}></Route>
+                    <Route path='/login' element= {<Login />}></Route>
                     <Route path='/app' element= {<App />}></Route>
                     <Route path='/home' element= {<Persona />}></Route>
                     <Route path='/create' element= {<CreatePersona />}></Route>

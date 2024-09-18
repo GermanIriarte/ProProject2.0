@@ -1,32 +1,67 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 
 function UpdateEmpleados() {
-    const [Nombres, Setname] = useState('');
-    const [Apellido1, SetLastName1] = useState('');
-    const [Apellido2, SetLastName2] = useState('');
-    const [FechaNac, SetDate] = useState('');
-    const [Correo, SetEmail] = useState('');
-    const [Telefono, SetPhone] = useState(''); 
-    const [Usuario, SetUser] = useState('');  
-    const [Contraseña, SetPassword] = useState('');  
-    const [Tipo_Usuario, SetTypeUser] = useState('');  
-    const {ID_Persona} = useParams();
-
+    const [Nombres, setNombres] = useState('');
+    const [Apellido1, setApellido1] = useState('');
+    const [Apellido2, setApellido2] = useState('');
+    const [FechaNac, setFechaNac] = useState('');
+    const [Correo, setCorreo] = useState('');
+    const [Telefono, setTelefono] = useState('');
+    const [Usuario, setUsuario] = useState('');
+    const [Contraseña, setContraseña] = useState('');
+    const [Tipo_Usuario, setTipoUsuario] = useState('');
+    const { ID_Persona } = useParams();  // Extrae el parámetro de la cédula desde la URL
     const navigate = useNavigate();
-    
-    console.log("CODIGO PERSONA: ",ID_Persona)
 
+    // Efecto para obtener los datos del empleado cuando cambie el ID_Persona
+    useEffect(() => {
+        console.log("id de la persona: ", ID_Persona);
+
+        // Resetear el estado antes de cargar nuevos datos
+        resetForm();
+        
+        axios.get(`http://localhost:8081/readPersonaCedula?ID_Persona=${ID_Persona}`)
+            .then(res => {
+                const empleado = res.data[0];  // Suponiendo que la respuesta es un array con los datos del empleado
+                if (empleado) {
+                    setNombres(empleado.Nombres || '');
+                    setApellido1(empleado.Apellido1 || '');
+                    setApellido2(empleado.Apellido2 || '');
+                    setFechaNac(empleado.FechaNac || '');
+                    setCorreo(empleado.Correo || '');
+                    setTelefono(empleado.Telefono || '');
+                    setUsuario(empleado.Usuario || '');
+                    setContraseña(empleado.Contraseña || '');
+                    setTipoUsuario(empleado.Tipo_Usuario || '');
+                }
+            })
+            .catch(err => console.log(err));
+    }, [ID_Persona]);  // Este efecto se ejecuta cuando cambia ID_Persona
+
+    // Función para resetear el formulario cuando se selecciona otro empleado
+    const resetForm = () => {
+        setNombres('');
+        setApellido1('');
+        setApellido2('');
+        setFechaNac('');
+        setCorreo('');
+        setTelefono('');
+        setUsuario('');
+        setContraseña('');
+        setTipoUsuario('');
+    };
+
+    // Función para manejar el submit
     function handleSubmit(event) {
         event.preventDefault();
-        const formattedDate = new Date(FechaNac).toISOString().split('T')[0];  // Esto asegura el formato 'YYYY-MM-DD'
-        axios.put('http://localhost:8081/updateEmpleado/' + ID_Persona, {
-            Nombres, 
-            Apellido1, 
-            Apellido2, 
-            FechaNac: formattedDate, 
-            Correo, 
+        axios.put(`http://localhost:8081/updateEmpleado/${ID_Persona}`, {
+            Nombres,
+            Apellido1,
+            Apellido2,
+            FechaNac,
+            Correo,
             Telefono,
             Usuario,
             Contraseña,
@@ -34,100 +69,114 @@ function UpdateEmpleados() {
         })
         .then(res => {
             console.log(res);
-            navigate('/Empleados');
+            navigate('/Empleados');  // Navegar de vuelta a la lista de empleados
         })
         .catch(err => console.log(err));
     }
+
+    // Función para navegar atrás
+    const handleNavigateBack = () => {
+        navigate('/Empleados');  // Navegar de vuelta a la lista de empleados
+    };
 
     return (
         <div className='container'>
             <div className='form-container'>
                 <form onSubmit={handleSubmit}>
-                    <h2>Update Empleado</h2>
+                    <h2>Actualizar Empleado</h2>
                     <div className='mb-2'>
-                        <label htmlFor=''>Name</label>
+                        <label>Nombre</label>
                         <input 
                             type='text' 
-                            placeholder='Enter Name' 
+                            value={Nombres}
+                            placeholder='Ingrese Nombre' 
                             className='form-control'
-                            onChange={e => Setname(e.target.value)} 
+                            onChange={e => setNombres(e.target.value)} 
                         />
                     </div>
                     <div className='mb-2'>
-                        <label htmlFor=''>Apellido1</label>
+                        <label>Apellido1</label>
                         <input 
                             type='text' 
-                            placeholder='Enter Apellido1' 
+                            value={Apellido1}
+                            placeholder='Ingrese Apellido1' 
                             className='form-control'
-                            onChange={e => SetLastName1(e.target.value)} 
+                            onChange={e => setApellido1(e.target.value)} 
                         />
                     </div>
                     <div className='mb-2'>
-                        <label htmlFor=''>Apellido2</label>
+                        <label>Apellido2</label>
                         <input 
                             type='text' 
-                            placeholder='Enter Apellido2' 
+                            value={Apellido2}
+                            placeholder='Ingrese Apellido2' 
                             className='form-control'
-                            onChange={e => SetLastName2(e.target.value)} 
+                            onChange={e => setApellido2(e.target.value)} 
                         />
                     </div>
                     <div className='mb-2'>
-                        <label htmlFor=''>Birth Day</label>
+                        <label>Fecha de Nacimiento</label>
                         <input 
                             type='date' 
-                            placeholder='Enter Birth Date' 
+                            value={FechaNac}
                             className='form-control'
-                            onChange={e => SetDate(e.target.value)} 
+                            onChange={e => setFechaNac(e.target.value)} 
                         />
                     </div>
                     <div className='mb-2'>
-                        <label htmlFor=''>Email</label>
+                        <label>Correo</label>
                         <input 
                             type='email' 
-                            placeholder='Enter Email' 
+                            value={Correo}
+                            placeholder='Ingrese Correo' 
                             className='form-control'
-                            onChange={e => SetEmail(e.target.value)} 
+                            onChange={e => setCorreo(e.target.value)} 
                         />
                     </div>
                     <div className='mb-2'>
-                        <label htmlFor=''>Telefono</label>
+                        <label>Teléfono</label>
                         <input 
                             type='text' 
-                            placeholder='Enter Phone' 
+                            value={Telefono}
+                            placeholder='Ingrese Teléfono' 
                             className='form-control'
-                            onChange={e => SetPhone(e.target.value)}  
+                            onChange={e => setTelefono(e.target.value)}  
                         />
                     </div>
                     <div className='mb-2'>
-                        <label htmlFor=''>Nombre de usuario</label>
+                        <label>Nombre de Usuario</label>
                         <input 
                             type='text' 
-                            placeholder='Enter User' 
+                            value={Usuario}
+                            placeholder='Ingrese Nombre de Usuario' 
                             className='form-control'
-                            onChange={e => SetUser(e.target.value)}  
+                            onChange={e => setUsuario(e.target.value)}  
                         />
                     </div>
                     <div className='mb-2'>
-                        <label htmlFor=''>Contraseña</label>
+                        <label>Contraseña</label>
                         <input 
                             type='password' 
-                            placeholder='Enter Password' 
+                            value={Contraseña}
+                            placeholder='Ingrese Contraseña' 
                             className='form-control'
-                            onChange={e => SetPassword(e.target.value)}  
+                            onChange={e => setContraseña(e.target.value)}  
                         />
                     </div>
                     <div className='mb-2'>
-                        <label htmlFor=''>Tipo Usuario</label>
+                        <label>Tipo de Usuario</label>
                         <select 
                             className='form-control'
-                            onChange={(e) => SetTypeUser(e.target.value)}  // Cambia el estado según la selección
+                            value={Tipo_Usuario}
+                            onChange={e => setTipoUsuario(e.target.value)}  
                         >
                             <option value="">Selecciona el tipo de usuario</option>
                             <option value="Admin">Admin</option>
                             <option value="Cajero">Cajero</option>
                         </select>
                     </div>
-                    <button className='btn btn-success'>Update</button>
+                    <button type='submit' className='btn btn-success'>Actualizar</button>
+                    <button type='button' className='btn btn-secondary ms-2' onClick={handleNavigateBack}>Atrás</button>
                 </form>
             </div>
         </div>
