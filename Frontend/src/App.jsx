@@ -5,6 +5,7 @@ import Proveedor from './Proveedor';
 import Clientes from './Clientes';  
 import Empleados from './Empleados';
 import './App.css';  
+import RegistrarCompra from './RegistrarCompra';
 
 function App() {
   const [selectedMenu, setSelectedMenu] = useState('');
@@ -29,6 +30,8 @@ function App() {
         return <Clientes />;
       case 'empleados':
         return <Empleados />;
+      case 'RegistrarCompra':
+        return <RegistrarCompra />;
       default:
         return <div>Selecciona una opción del menú</div>;
     }
@@ -43,6 +46,7 @@ function App() {
             <li><button onClick={() => setSelectedMenu('proveedores')}>Proveedores</button></li>
             <li><button onClick={() => setSelectedMenu('clientes')}>Clientes</button></li>
             <li><button onClick={() => setSelectedMenu('empleados')}>Empleados</button></li>
+            <li><button onClick={() => setSelectedMenu('RegistrarCompra')}>RegistrarCompra</button></li>
           </ul>
           <button onClick={handleLogout} className="logout-button">
             Logout

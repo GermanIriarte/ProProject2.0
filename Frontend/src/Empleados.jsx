@@ -40,7 +40,7 @@ function Empleados() {
     };
 
     const handleNavigateBack = () => {
-        navigate('/login');  // Navegar de vuelta a la ruta "/app"
+        navigate('/app');  // Navegar de vuelta a la ruta "/app"
     };
 
     return (

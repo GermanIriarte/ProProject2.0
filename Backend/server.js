@@ -265,6 +265,32 @@ app.get("/readCliente", (req, res) => {
     });
 });
 
+app.get('/readClientesCedula', (req, res) => { // Dada una cédula
+    const { ID_Persona } = req.query; // Obtener la cédula desde los parámetros de la query
+    console.log('Consultando datos del cliente con cédula:', ID_Persona);
+
+    const sql = `
+        SELECT p.ID_Persona, p.Nombres, p.Apellido1, p.Apellido2, p.FechaNac, p.Correo, p.Telefono, 
+               c.Puntos
+        FROM Persona p
+        LEFT JOIN Cliente c ON p.ID_Persona = c.ID_Persona
+        WHERE p.ID_Persona = ?
+    `;
+
+    db.query(sql, [ID_Persona], (err, result) => {
+        if (err) {
+            console.error('Error al consultar cliente:', err);
+            return res.status(500).send('Error al consultar cliente');
+        }
+
+        if (result.length > 0) {
+            res.json(result); // Enviar los datos del cliente
+        } else {
+            res.status(404).send('Cliente no encontrado'); // Manejar el caso en que no se encuentre el cliente
+        }
+    });
+});
+
 app.get("/readEmpleado", (req, res) => {
     const sql = `
         SELECT persona.*, empleado.Usuario, empleado.Tipo_Usuario 
@@ -304,6 +330,28 @@ app.get("/readPersona", (req, res) => {
 });
 
 
+// Obtener datos de la tabla persona (todos los atributos excepto puntos)
+app.get('/getPersona/:ID_Persona', (req, res) => {
+    console.log(ID_Persona);
+    const { ID_Persona } = req.params;
+    const sql = "SELECT Nombres, Apellido1, Apellido2, FechaNac, Correo, Telefono, ID_Persona FROM persona WHERE ID_Persona = ?";  // Excluyendo Puntos
+
+    db.query(sql, [ID_Persona], (err, result) => {
+        if (err) return res.json({ error: 'Error obteniendo la persona' });
+        return res.json(result[0]);
+    });
+});
+
+// Obtener datos de la tabla clientes (solo puntos)
+app.get('/getClientePuntos/:ID_Persona', (req, res) => {
+    const { ID_Persona } = req.params;
+    const sql = "SELECT Puntos FROM clientes WHERE ID_Persona = ?";  // Solo obteniendo puntos
+
+    db.query(sql, [ID_Persona], (err, result) => {
+        if (err) return res.json({ error: 'Error obteniendo los puntos' });
+        return res.json(result[0]);
+    });
+});
 
 
 
@@ -340,13 +388,12 @@ app.put('/updateCliente/:ID_Persona', (req, res) => {
     const ID_Persona = req.params.ID_Persona;
 
     // Consulta SQL para actualizar la tabla persona
-    const sqlPersona = "UPDATE `persona` SET `Nombres` = ?, `Apellido1` = ?, `Apellido2` = ?, `FechaNac` = ?, `Correo` = ?, `Telefono` = ? WHERE `ID_Persona` = ?";
+    const sqlPersona = "UPDATE `persona` SET `Nombres` = ?, `Apellido1` = ?, `Apellido2` = ?, `Correo` = ?, `Telefono` = ? WHERE `ID_Persona` = ?";
     
     const valuesPersona = [
         req.body.Nombres,
         req.body.Apellido1,
         req.body.Apellido2,
-        req.body.FechaNac,
         req.body.Correo,
         req.body.Telefono
     ];
@@ -644,6 +691,43 @@ app.get('/readEmpleadoCedula', (req, res) => {
         return res.json(data);
     });
 });
+
+app.post('/RegistrarCompra', (req, res) => {
+    const { cedula, codigoProducto, cantidad } = req.body;
+    const factor = 0.05;
+
+    // Disminuir la cantidad en la tabla de productos
+    const sqlUpdateProduct = "UPDATE productos SET cantidad = cantidad - ? WHERE cod_producto = ?";
+    db.query(sqlUpdateProduct, [cantidad, codigoProducto], (err, result) => {
+        if (err) return res.json({ error: 'Error actualizando la cantidad del producto' });
+
+        // Obtener el precio del producto
+        const sqlGetPrice = "SELECT precio FROM productos WHERE cod_producto = ?";
+        db.query(sqlGetPrice, [codigoProducto], (err, data) => {
+            if (err) return res.json({ error: 'Error obteniendo el precio del producto' });
+
+            const precio = data[0].precio;
+
+            // Obtener los puntos actuales del cliente
+            const sqlGetPoints = "SELECT puntos FROM cliente WHERE id_persona = ?";
+            db.query(sqlGetPoints, [cedula], (err, pointsData) => {
+                if (err) return res.json({ error: 'Error obteniendo los puntos del usuario' });
+
+                const puntosActuales = pointsData[0] ? pointsData[0].puntos : 0; // Si el cliente no tiene puntos, se establece en 0
+                const puntosGanados = puntosActuales + (precio * cantidad * factor);
+
+                // Añadir los puntos al usuario
+                const sqlUpdateUser = "UPDATE cliente SET puntos = ? WHERE id_persona = ?";
+                db.query(sqlUpdateUser, [puntosGanados, cedula], (err, result) => {
+                    if (err) return res.json({ error: 'Error actualizando los puntos del usuario' });
+
+                    return res.json({ message: 'Compra registrada exitosamente' });
+                });
+            });
+        });
+    });
+});
+
 
 
 

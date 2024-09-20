@@ -18,6 +18,7 @@ import Empleados from './Empleados';
 import CreateEmpleados from './CreateEmpleados';
 import UpdateEmpleados from './UpdateEmpleados';
 import Login from './login';
+import RegistrarCompra from './RegistrarCompra';
 
 
 
@@ -28,6 +29,7 @@ function RoutesNav(){
             <BrowserRouter>
                 <Routes>
                     <Route path='/' element= {<Login />}></Route>
+                    <Route path='/RegistrarCompra' element= {<RegistrarCompra />}></Route>
                     <Route path='/login' element= {<Login />}></Route>
                     <Route path='/app' element= {<App />}></Route>
                     <Route path='/home' element= {<Persona />}></Route>

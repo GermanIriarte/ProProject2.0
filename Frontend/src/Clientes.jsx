@@ -1,10 +1,12 @@
-import React, {useEffect, useState} from "react";
-import axios from 'axios'
+import React, { useEffect, useState } from "react";
+import axios from 'axios';
 import './Persona.css';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Clientes() {
     const [clientes, setCliente] = useState([]);
+    const navigate = useNavigate();  // Crear instancia de navigate
+
     useEffect(() => {
         axios.get('http://localhost:8081/readCliente')
             .then(res => {
@@ -12,19 +14,24 @@ function Clientes() {
             })
             .catch(err => console.log(err));
     }, []);
-    
-    const handleDelete = async(ID_Persona) =>{
+
+    const handleDelete = async (ID_Persona) => {
         try {
-            await axios.delete('http://localhost:8081/deleteCliente/' + ID_Persona )
-            window.location.reload()
-        }catch(err) {
+            await axios.delete('http://localhost:8081/deleteCliente/' + ID_Persona);
+            window.location.reload();
+        } catch (err) {
             console.log(err);
         }
-    }
+    };
+
+    const handleNavigateBack = () => {
+        navigate('/app');  // Navegar de vuelta a la lista de empleados
+    };
+
     return (
         <div className='persona-container'>
             <div className='persona-content'>
-                <Link to = "/createClientes"className='persona-add-btn'>Add +</Link>
+                <Link to="/createClientes" className='persona-add-btn'>Add +</Link>
                 <table className='persona-table'>
                     <thead>
                         <tr>
@@ -41,7 +48,7 @@ function Clientes() {
                     </thead>
                     <tbody>
                         {
-                            clientes.map((data,i) => (
+                            clientes.map((data, i) => (
                                 <tr key={i}>
                                     <td>{data.ID_Persona}</td>
                                     <td>{data.Nombres}</td>
@@ -58,6 +65,7 @@ function Clientes() {
                         }
                     </tbody>
                 </table>
+                <button type='button' className='btn btn-secondary ms-2' onClick={handleNavigateBack}>Atrás</button>
             </div>
         </div>
     );

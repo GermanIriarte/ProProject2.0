@@ -1,110 +1,145 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
+import Empleados from './Empleados';
 
-function UpdateClientes() {
-    const [Nombres, Setname] = useState('');
-    const [Apellido1, SetLastName1] = useState('');
-    const [Apellido2, SetLastName2] = useState('');
-    const [FechaNac, SetDate] = useState('');
-    const [Correo, SetEmail] = useState('');
-    const [Telefono, SetPhone] = useState(''); 
-    const [Puntos, SetPoints] = useState(''); 
-    const {ID_Persona} = useParams();
+function UpdateEmpleados() {
+    const [Nombres, setNombres] = useState('');
+    const [Apellido1, setApellido1] = useState('');
+    const [Apellido2, setApellido2] = useState('');
+    const [FechaNac, setFechaNac] = useState('');
+    const [Correo, setCorreo] = useState('');
+    const [Telefono, setTelefono] = useState('');
+    const [Puntos, setPuntos] = useState('');  // Agregar estado para Puntos
+    const { ID_Persona } = useParams();
     const navigate = useNavigate();
-    console.log("CODIGO PERSONA: ",ID_Persona)
+
+    // Efecto para obtener los datos del empleado cuando cambie el ID_Persona
+    useEffect(() => {
+        console.log("id de la persona: ", ID_Persona);
+
+        // Resetear el estado antes de cargar nuevos datos
+        resetForm();
+        
+        axios.get(`http://localhost:8081/ReadClientesCedula?ID_Persona=${ID_Persona}`)
+            .then(res => {
+                const empleado = res.data[0];  // Suponiendo que la respuesta es un array con los datos del empleado
+                if (empleado) {
+                    setNombres(empleado.Nombres || '');
+                    setApellido1(empleado.Apellido1 || '');
+                    setApellido2(empleado.Apellido2 || '');
+                    setCorreo(empleado.Correo || '');
+                    setTelefono(empleado.Telefono || '');
+                    setPuntos(empleado.Puntos || '');  // Asegúrate de obtener Puntos
+                }
+            })
+            .catch(err => console.log(err));
+    }, [ID_Persona]);
+
+    // Función para resetear el formulario cuando se selecciona otro empleado
+    const resetForm = () => {
+        setNombres('');
+        setApellido1('');
+        setApellido2('');
+        setCorreo('');
+        setTelefono('');
+        setPuntos('');  // Resetear Puntos
+    };
+
+    // Función para manejar el submit
     function handleSubmit(event) {
         event.preventDefault();
-        const formattedDate = new Date(FechaNac).toISOString().split('T')[0];  // Esto asegura el formato 'YYYY-MM-DD'
-        axios.put('http://localhost:8081/updateCliente/' + ID_Persona, {
-            Nombres, 
-            Apellido1, 
-            Apellido2, 
-            FechaNac: formattedDate, 
-            Correo, 
+        axios.put(`http://localhost:8081/updateCliente/${ID_Persona}`, {
+            Nombres,
+            Apellido1,
+            Apellido2,
+            Correo,
             Telefono,
-            Puntos
+            Puntos,
         })
         .then(res => {
             console.log(res);
-            navigate('/Clientes');
+            navigate('/Cliente');  // Navegar de vuelta a la lista de empleados
         })
         .catch(err => console.log(err));
     }
+
+    // Función para navegar atrás
+    const handleNavigateBack = () => {
+        navigate('/clientes');  // Navegar de vuelta a la lista de empleados
+    };
 
     return (
         <div className='container'>
             <div className='form-container'>
                 <form onSubmit={handleSubmit}>
-                    <h2>Update Cliente</h2>
+                    <h2>Actualizar Empleado</h2>
                     <div className='mb-2'>
-                        <label htmlFor=''>Name</label>
+                        <label>Nombre</label>
                         <input 
                             type='text' 
-                            placeholder='Enter Name' 
+                            value={Nombres}
+                            placeholder='Ingrese Nombre' 
                             className='form-control'
-                            onChange={e => Setname(e.target.value)} 
+                            onChange={e => setNombres(e.target.value)} 
                         />
                     </div>
                     <div className='mb-2'>
-                        <label htmlFor=''>Apellido1</label>
+                        <label>Apellido1</label>
                         <input 
                             type='text' 
-                            placeholder='Enter Apellido1' 
+                            value={Apellido1}
+                            placeholder='Ingrese Apellido1' 
                             className='form-control'
-                            onChange={e => SetLastName1(e.target.value)} 
+                            onChange={e => setApellido1(e.target.value)} 
                         />
                     </div>
                     <div className='mb-2'>
-                        <label htmlFor=''>Apellido2</label>
+                        <label>Apellido2</label>
                         <input 
                             type='text' 
-                            placeholder='Enter Apellido2' 
+                            value={Apellido2}
+                            placeholder='Ingrese Apellido2' 
                             className='form-control'
-                            onChange={e => SetLastName2(e.target.value)} 
+                            onChange={e => setApellido2(e.target.value)} 
                         />
                     </div>
                     <div className='mb-2'>
-                        <label htmlFor=''>Birth Day</label>
-                        <input 
-                            type='date' 
-                            placeholder='Enter Birth Date' 
-                            className='form-control'
-                            onChange={e => SetDate(e.target.value)} 
-                        />
-                    </div>
-                    <div className='mb-2'>
-                        <label htmlFor=''>Email</label>
+                        <label>Correo</label>
                         <input 
                             type='email' 
-                            placeholder='Enter Email' 
+                            value={Correo}
+                            placeholder='Ingrese Correo' 
                             className='form-control'
-                            onChange={e => SetEmail(e.target.value)} 
+                            onChange={e => setCorreo(e.target.value)} 
                         />
                     </div>
                     <div className='mb-2'>
-                        <label htmlFor=''>Telefono</label>
+                        <label>Teléfono</label>
                         <input 
                             type='text' 
-                            placeholder='Enter Phone' 
+                            value={Telefono}
+                            placeholder='Ingrese Teléfono' 
                             className='form-control'
-                            onChange={e => SetPhone(e.target.value)}  
+                            onChange={e => setTelefono(e.target.value)}  
                         />
                     </div>
                     <div className='mb-2'>
-                        <label htmlFor=''>Puntos</label>
+                        <label>Puntos</label>
                         <input 
-                            type='number' 
-                            placeholder='Enter Points' 
+                            type='text' 
+                            value={Puntos}
+                            placeholder='Ingrese Puntos'  // Cambiar el placeholder
                             className='form-control'
-                            onChange={e => SetPoints(e.target.value)}  
+                            onChange={e => setPuntos(e.target.value)}
                         />
                     </div>
-                    <button className='btn btn-success'>Update</button>
+                    <button type='submit' className='btn btn-success'>Actualizar</button>
+                    <button type='button' className='btn btn-secondary ms-2' onClick={handleNavigateBack}>Atrás</button>
                 </form>
             </div>
         </div>
     );
 }
 
-export default UpdateClientes;
+export default UpdateEmpleados;
