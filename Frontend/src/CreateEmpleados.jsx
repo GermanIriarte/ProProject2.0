@@ -31,7 +31,7 @@ function CreateEmpleados() {
         })
         .then(res => {
             console.log(res);
-            navigate('/Empleados');
+            navigate('/app');
         })
         .catch(err => console.log(err));
     }

@@ -27,7 +27,7 @@ function CreateClientes() {
         })
         .then(res => {
             console.log(res);
-            navigate('/Clientes');
+            navigate('/app');
         })
         .catch(err => console.log(err));
     }

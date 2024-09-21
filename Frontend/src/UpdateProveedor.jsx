@@ -14,7 +14,7 @@ function UpdateProveedor() {
         })
         .then(res => {
             console.log(res);
-            navigate('/homeProveedor');
+            navigate('/app');
         })
         .catch(err => console.log(err));
     }

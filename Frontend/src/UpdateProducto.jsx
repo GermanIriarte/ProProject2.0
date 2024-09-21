@@ -43,7 +43,7 @@ function UpdateProducto() {
         })
         .then(res => {
             console.log(res);
-            navigate('/homeProducto');
+            navigate('/app');
         })
         .catch(err => console.log(err));
     }

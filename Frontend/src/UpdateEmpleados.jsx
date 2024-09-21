@@ -69,14 +69,14 @@ function UpdateEmpleados() {
         })
         .then(res => {
             console.log(res);
-            navigate('/Empleados');  // Navegar de vuelta a la lista de empleados
+            navigate('/app');  // Navegar de vuelta a la lista de empleados
         })
         .catch(err => console.log(err));
     }
 
     // Función para navegar atrás
     const handleNavigateBack = () => {
-        navigate('/Empleados');  // Navegar de vuelta a la lista de empleados
+        navigate('/app');  // Navegar de vuelta a la lista de empleados
     };
 
     return (

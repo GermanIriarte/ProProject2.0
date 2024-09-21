@@ -25,7 +25,7 @@ function CreatePersona() {
         })
         .then(res => {
             console.log(res);
-            navigate('/home');
+            navigate('/app');
         })
         .catch(err => console.log(err));
     }
