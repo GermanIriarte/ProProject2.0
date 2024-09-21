@@ -49,7 +49,7 @@ function App() {
             <li><button onClick={() => setSelectedMenu('clientes')}>Clientes</button></li>
             <li><button onClick={() => setSelectedMenu('empleados')}>Empleados</button></li>
             <li><button onClick={() => setSelectedMenu('RegistrarCompra')}>RegistrarCompra</button></li>
-            <li><button onClick={() => setSelectedMenu('Compra')}>Compra a</button></li>
+            <li><button onClick={() => setSelectedMenu('Compra')}>Compra</button></li>
           </ul>
           <button onClick={handleLogout} className="logout-button">
             Logout
