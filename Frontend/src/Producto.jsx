@@ -46,7 +46,7 @@ function Producto() {
             <div className='d-flex justify-content-between align-items-center mb-4'>
                 <select className='form-select' onChange={handleCategoryChange} value={categoria}>
                     <option value="">Todas</option>
-                    <option value="Fruits">Frutas</option>
+                    <option value="Frutas">Frutas</option>
                     <option value="Clothing">Ropa</option>
                     <option value="Books">Libros</option>
                     <option value="Aseo">Aseo</option>

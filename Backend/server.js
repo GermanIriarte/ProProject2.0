@@ -463,22 +463,23 @@ app.get('/Categoria/:categoria?', (req, res) => { // Nota el '?' al final del pa
 app.get('/readEmpleadoCedula', (req, res) => {
     const { ID_Persona } = req.query;
 
-    let sql = "SELECT * FROM Persona";
+    let sql = "SELECT P.*, E.* FROM Persona P JOIN Empleado E ON P.Id_persona = E.Id_persona";
     const params = [];
 
     if (ID_Persona) {
-        sql += " WHERE ID_Persona = ?";
+        sql += " WHERE P.Id_persona = ?";
         params.push(ID_Persona);
     }
 
     db.query(sql, params, (err, data) => {
         if (err) {
             console.error(err);
-            return res.status(500).json("Error al obtener los empleado");
+            return res.status(500).json("Error al obtener los empleados");
         }
         return res.json(data);
     });
 });
+
 
 app.put('/updateCliente/:ID_Persona', (req, res) => {
     const ID_Persona = req.params.ID_Persona;
