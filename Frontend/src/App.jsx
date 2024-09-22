@@ -6,6 +6,8 @@ import Clientes from './Clientes';
 import Empleados from './Empleados';
 import './App.css';  
 import RegistrarCompra from './RegistrarCompra';
+import Compra from './Compra';
+
 
 function App() {
   const [selectedMenu, setSelectedMenu] = useState('');
@@ -33,7 +35,7 @@ function App() {
       case 'RegistrarCompra':
         return <RegistrarCompra />;
       case 'Compra':
-        return <RegistrarCompra />;
+        return <Compra />;
       default:
         return <div>Selecciona una opción del menú</div>;
     }

@@ -238,6 +238,46 @@ app.post('/RegistrarCompra', (req, res) => {
     });
 });
 
+app.post("/createCompra", (req, res) => {
+    const sql = "INSERT INTO `factura_venta` (`Fecha`, `ID_Persona`) VALUES (?)";
+    const values = [
+        req.body.Fecha,
+        req.body.ID_Persona,
+    ]
+    db.query(sql, [values], (err, data) => {
+        if (err) {
+            console.error(err); // Muestra el error en la consola
+            return res.json("Error");
+        }
+        return res.json("data se mando de manera exitosa");
+    });
+});
+
+app.post("/createItemVendido/:Cod_Factura", (req, res) => {
+    // Obtener el Cod_Factura de la URL
+    const Cod_Factura = req.params.Cod_Factura;
+
+    // SQL para insertar el nuevo item
+    const sql = "INSERT INTO `Item_Vendido` (`Cod_Producto`, `Cod_Factura`, `Cantidad`) VALUES (?, ?, ?)";
+
+    // Valores a insertar, incluyendo Cod_Factura de la URL
+    const values = [
+        req.body.Cod_Producto,
+        Cod_Factura,  // Tomamos el Cod_Factura directamente de la URL
+        req.body.Cantidad
+    ];
+
+    // Ejecutar la consulta
+    db.query(sql, values, (err, data) => {
+        if (err) {
+            console.error(err); // Muestra el error en la consola
+            return res.json("Error al añadir el item");
+        }
+        return res.json("Item añadido correctamente con Cod_Factura: " + Cod_Factura);
+    });
+});
+
+
 app.get("/readProductos",(req,res) =>{
     const sql = "SELECT * FROM productos";
     db.query(sql, (err,data) => {
@@ -415,6 +455,24 @@ app.get("/readProveedor",(req,res) =>{
         return res.json(data);
     })
 })
+
+app.get('/readCompra', (req, res) => {
+    const { Cod_Factura } = req.query;
+
+    // Consulta SQL para obtener el producto por su código
+    const sql = 'SELECT * FROM factura_venta';
+
+    db.query(sql, [Cod_Factura], (err, result) => {
+        if (err) {
+            console.error('Error al obtener el producto:', err);
+            res.status(500).json({ error: 'Error al obtener el producto' });
+        } else if (result.length === 0) {
+            res.status(404).json({ error: 'Producto no encontrado' });
+        } else {
+            res.json(result);
+        }
+    });
+});
 
 app.put('/updatePersona/:ID_Persona', (req, res) => {
     const ID_Persona = req.params.ID_Persona

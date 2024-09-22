@@ -19,6 +19,12 @@ import CreateEmpleados from './CreateEmpleados';
 import UpdateEmpleados from './UpdateEmpleados';
 import Login from './login';
 import RegistrarCompra from './RegistrarCompra';
+import Compra from './Compra';
+import CreateCompras from './CreateCompras';
+import CreateItems from './CreateItems';
+
+
+
 
 
 
@@ -47,7 +53,9 @@ function RoutesNav(){
                     <Route path='/Empleados' element= {<Empleados />}></Route>
                     <Route path='/createEmpleados' element= {<CreateEmpleados />}></Route>
                     <Route path='/updateEmpleados/:ID_Persona' element={<UpdateEmpleados />} />
-
+                    <Route path='/Compra' element= {<Compra />}></Route>
+                    <Route path='/createCompras' element= {<CreateCompras />}></Route>
+                    <Route path='/createItems/:Cod_Factura' element= {<CreateItems />}></Route>
                     
                     
                 </Routes>
