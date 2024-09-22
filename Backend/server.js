@@ -277,6 +277,41 @@ app.post("/createItemVendido/:Cod_Factura", (req, res) => {
     });
 });
 
+app.get('/sales', (req, res) => {    
+    const date = req.query.date;
+    const query = `
+      SELECT
+        p.Cod_Producto,
+        p.Nombre,
+        SUM(iv.cantidad) AS cantidad_total,
+        p.Precio,
+        SUM(iv.cantidad * p.precio) AS ventas_totales
+      FROM
+        Factura_Venta f
+      JOIN
+        Item_Vendido iv ON f.Cod_Factura = iv.Cod_Factura
+      JOIN
+        Productos p ON iv.Cod_Producto = p.Cod_Producto
+      WHERE
+        DATE(f.Fecha) = ?
+      GROUP BY
+        p.Cod_Producto, p.Nombre, p.Precio
+      ORDER BY
+        ventas_totales DESC;
+    `;
+    db.query(query, [date], (error, results) => {
+      if (error) {
+        console.error('Error al ejecutar la consulta:', error);
+        res.status(500).send('Error al obtener los datos de ventas');
+      } else {
+        // Calcular las ganancias totales del día
+        const totalEarnings = results.reduce((total, item) => total + item.ventas_totales, 0);
+        res.json({ sales: results, totalEarnings });
+        console.log("Sent: ", results, " , ", totalEarnings);
+      }
+    });
+  });
+
 
 app.get("/readProductos",(req,res) =>{
     const sql = "SELECT * FROM productos";

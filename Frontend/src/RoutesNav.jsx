@@ -22,12 +22,7 @@ import RegistrarCompra from './RegistrarCompra';
 import Compra from './Compra';
 import CreateCompras from './CreateCompras';
 import CreateItems from './CreateItems';
-
-
-
-
-
-
+import Reporte from './Reporte';
 
 function RoutesNav(){
     return(
@@ -56,6 +51,7 @@ function RoutesNav(){
                     <Route path='/Compra' element= {<Compra />}></Route>
                     <Route path='/createCompras' element= {<CreateCompras />}></Route>
                     <Route path='/createItems/:Cod_Factura' element= {<CreateItems />}></Route>
+                    <Route path='/Reporte' element= {<Reporte />}></Route>
                     
                     
                 </Routes>
