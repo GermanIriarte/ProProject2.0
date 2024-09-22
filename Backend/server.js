@@ -509,6 +509,18 @@ app.get('/readCompra', (req, res) => {
     });
 });
 
+app.get('/itemsVendidos/:Cod_Factura', (req, res) => {
+    const Cod_Factura = req.params.Cod_Factura;
+    const sql = "SELECT * FROM Item_Vendido WHERE Cod_Factura = ?";
+    db.query(sql, [Cod_Factura], (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.json("Error");
+        }
+        return res.json(data);
+    });
+});
+
 app.put('/updatePersona/:ID_Persona', (req, res) => {
     const ID_Persona = req.params.ID_Persona
     const sql = "UPDATE `persona` SET `Nombres` = ?, `Apellido1` = ?, `Apellido2` = ?, `FechaNac` = ?, `Correo` = ?, `Telefono` = ? where ID_Persona = ?";
