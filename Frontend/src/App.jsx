@@ -33,8 +33,6 @@ function App() {
         return <Clientes />;
       case 'Empleados':
         return <Empleados />;
-      case 'RegistrarCompra':
-        return <RegistrarCompra />;
       case 'Compra':
         return <Compra />;
       case 'Reporte':
@@ -53,7 +51,6 @@ function App() {
             <li><button onClick={() => setSelectedMenu('Proveedores')}>Proveedores</button></li>
             <li><button onClick={() => setSelectedMenu('Clientes')}>Clientes</button></li>
             <li><button onClick={() => setSelectedMenu('Empleados')}>Empleados</button></li>
-            <li><button onClick={() => setSelectedMenu('RegistrarCompra')}>RegistrarCompra</button></li>
             <li><button onClick={() => setSelectedMenu('Compra')}>Compra</button></li>
             <li><button onClick={() => setSelectedMenu('Reporte')}>Reporte</button></li>
           </ul>
