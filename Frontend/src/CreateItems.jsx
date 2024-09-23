@@ -21,12 +21,19 @@ function CreateItems() {
     // Manejar la adición de un nuevo item
     function handleSubmit(event) {
         event.preventDefault();
+    
+        // Verificar que la cantidad es mayor que 0
+        if (Cantidad <= 0) {
+            alert("La cantidad debe ser mayor a 0");
+            return;
+        }
+    
         axios.post(`http://localhost:8081/createItemVendido/${Cod_Factura}`, {
             Cod_Producto,
             Cantidad
         })
         .then(res => {
-            console.log(res);
+            alert(res.data.message);  // Mostrar el mensaje de éxito o error
             // Recargar los items vendidos después de añadir un nuevo item
             axios.get(`http://localhost:8081/itemsVendidos/${Cod_Factura}`)
             .then(res => {
@@ -34,8 +41,15 @@ function CreateItems() {
             });
             navigate('/app');  // Redirigir a /app después del envío exitoso
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+            if (err.response && err.response.data.message) {
+                alert(err.response.data.message);  // Mostrar el error del servidor (e.g., "Stock insuficiente")
+            } else {
+                console.log(err);
+            }
+        });
     }
+    
 
     // Manejar la navegación de regreso
     function handleNavigateBack() {

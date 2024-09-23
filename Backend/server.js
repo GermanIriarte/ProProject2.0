@@ -253,29 +253,46 @@ app.post("/createCompra", (req, res) => {
     });
 });
 
-app.post("/createItemVendido/:Cod_Factura", (req, res) => {
-    // Obtener el Cod_Factura de la URL
+// API para crear un nuevo Item_Vendido con verificación de inventario
+app.post('/createItemVendido/:Cod_Factura', (req, res) => {
+    const { Cod_Producto, Cantidad } = req.body;
     const Cod_Factura = req.params.Cod_Factura;
 
-    // SQL para insertar el nuevo item
-    const sql = "INSERT INTO `Item_Vendido` (`Cod_Producto`, `Cod_Factura`, `Cantidad`) VALUES (?, ?, ?)";
-
-    // Valores a insertar, incluyendo Cod_Factura de la URL
-    const values = [
-        req.body.Cod_Producto,
-        Cod_Factura,  // Tomamos el Cod_Factura directamente de la URL
-        req.body.Cantidad
-    ];
-
-    // Ejecutar la consulta
-    db.query(sql, values, (err, data) => {
+    // Consultar el stock disponible del producto
+    const checkStockSQL = "SELECT Cantidad FROM productos WHERE Cod_Producto = ?";
+    db.query(checkStockSQL, [Cod_Producto], (err, result) => {
         if (err) {
-            console.error(err); // Muestra el error en la consola
-            return res.json("Error al añadir el item");
+            console.error(err);
+            return res.status(500).json({ message: "Error al verificar el inventario" });
         }
-        return res.json("Item añadido correctamente con Cod_Factura: " + Cod_Factura);
+
+        const stockDisponible = result[0]?.Cantidad;
+
+        if (!stockDisponible || stockDisponible < Cantidad) {
+            return res.status(400).json({ message: "Stock insuficiente" });
+        }
+
+        // Si hay suficiente stock, agregar el ítem a la factura
+        const insertItemSQL = "INSERT INTO Item_Vendido (Cod_Factura, Cod_Producto, Cantidad) VALUES (?, ?, ?)";
+        db.query(insertItemSQL, [Cod_Factura, Cod_Producto, Cantidad], (err, data) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ message: "Error al agregar el ítem a la factura" });
+            }
+
+            // Reducir el stock del producto
+            const updateStockSQL = "UPDATE productos SET Cantidad = Cantidad - ? WHERE Cod_Producto = ?";
+            db.query(updateStockSQL, [Cantidad, Cod_Producto], (err, data) => {
+                if (err) {
+                    console.error(err);
+                    return res.status(500).json({ message: "Error al actualizar el inventario" });
+                }
+                return res.json({ message: "Item agregado y stock actualizado exitosamente" });
+            });
+        });
     });
 });
+
 
 app.get('/sales', (req, res) => {    
     const date = req.query.date;
