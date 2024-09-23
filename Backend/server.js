@@ -521,6 +521,18 @@ app.get('/itemsVendidos/:Cod_Factura', (req, res) => {
     });
 });
 
+app.get('/readItemsVendidos', (req, res) => {
+    const sql = "SELECT * FROM Item_Vendido";
+    db.query(sql, (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.json("Error");
+        }
+        return res.json(data);
+    });
+});
+
+
 app.put('/updatePersona/:ID_Persona', (req, res) => {
     const ID_Persona = req.params.ID_Persona
     const sql = "UPDATE `persona` SET `Nombres` = ?, `Apellido1` = ?, `Apellido2` = ?, `FechaNac` = ?, `Correo` = ?, `Telefono` = ? where ID_Persona = ?";
@@ -833,6 +845,31 @@ app.delete('/deleteProveedor/:Cod_Proveedor', (req, res) => {
         return res.json("Data DELETED SUCCESS");
     });
 });
+
+
+app.delete('/deleteCompra/:Cod_Factura', (req, res) => {
+    const Cod_Factura = req.params.Cod_Factura;
+
+    // Primero eliminamos los items relacionados
+    const deleteItemsSQL = "DELETE FROM item_vendido WHERE Cod_Factura = ?";
+    db.query(deleteItemsSQL, [Cod_Factura], (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: "Error al eliminar los items de la factura", error: err });
+        }
+
+        // Luego eliminamos la factura
+        const deleteFacturaSQL = "DELETE FROM factura_venta WHERE Cod_Factura = ?";
+        db.query(deleteFacturaSQL, [Cod_Factura], (err, data) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ message: "Error al eliminar la factura", error: err });
+            }
+            return res.json({ message: "Factura y sus items eliminados exitosamente" });
+        });
+    });
+});
+
 
 
 app.listen(8081,() => {
