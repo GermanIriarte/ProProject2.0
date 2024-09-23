@@ -50,7 +50,7 @@ function RoutesNav(){
                     <Route path='/updateEmpleados/:ID_Persona' element={<UpdateEmpleados />} />
                     <Route path='/Compra' element= {<Compra />}></Route>
                     <Route path='/createCompras' element= {<CreateCompras />}></Route>
-                    <Route path='/createItems/:Cod_Factura' element= {<CreateItems />}></Route>
+                    <Route path='/createItems/:Cod_Factura/:ID_Persona' element={<CreateItems />} />
                     <Route path='/Reporte' element= {<Reporte />}></Route>
                     
                     

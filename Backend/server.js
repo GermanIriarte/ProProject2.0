@@ -253,13 +253,12 @@ app.post("/createCompra", (req, res) => {
     });
 });
 
-// API para crear un nuevo Item_Vendido con verificación de inventario
-app.post('/createItemVendido/:Cod_Factura', (req, res) => {
-    const { Cod_Producto, Cantidad } = req.body;
-    const Cod_Factura = req.params.Cod_Factura;
+app.post('/createItemVendido/:Cod_Factura/:ID_Persona', (req, res) => {
+    const { Cod_Producto, Cantidad } = req.body; // Datos enviados en el cuerpo de la solicitud
+    const { Cod_Factura, ID_Persona } = req.params; // Datos de la URL
 
     // Consultar el stock disponible del producto
-    const checkStockSQL = "SELECT Cantidad FROM productos WHERE Cod_Producto = ?";
+    const checkStockSQL = "SELECT Cantidad, Precio FROM productos WHERE Cod_Producto = ?";
     db.query(checkStockSQL, [Cod_Producto], (err, result) => {
         if (err) {
             console.error(err);
@@ -267,6 +266,7 @@ app.post('/createItemVendido/:Cod_Factura', (req, res) => {
         }
 
         const stockDisponible = result[0]?.Cantidad;
+        const precioProducto = result[0]?.Precio; // Obtener el precio del producto
 
         if (!stockDisponible || stockDisponible < Cantidad) {
             return res.status(400).json({ message: "Stock insuficiente" });
@@ -287,7 +287,21 @@ app.post('/createItemVendido/:Cod_Factura', (req, res) => {
                     console.error(err);
                     return res.status(500).json({ message: "Error al actualizar el inventario" });
                 }
-                return res.json({ message: "Item agregado y stock actualizado exitosamente" });
+
+                // Calcular los puntos a añadir al cliente
+                const puntosGanados = Cantidad * precioProducto * 0.05; // Multiplicar cantidad, precio y multiplicador
+
+                // Actualizar los puntos del cliente en la tabla "clientes"
+                const updatePuntosSQL = "UPDATE cliente SET puntos = puntos + ? WHERE ID_Persona = ?";
+                db.query(updatePuntosSQL, [puntosGanados, ID_Persona], (err, result) => {
+                    if (err) {
+                        console.error(err);
+                        return res.status(500).json({ message: "Error al actualizar los puntos del cliente" });
+                    }
+
+                    // Respuesta final indicando que todo se realizó correctamente
+                    return res.json({ message: "Item agregado, stock actualizado y puntos del cliente actualizados exitosamente" });
+                });
             });
         });
     });

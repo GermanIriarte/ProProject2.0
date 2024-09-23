@@ -15,11 +15,11 @@ function CreateCompras() {
             Fecha: formattedDate,
             ID_Persona
         })
-        .then(res => {
-            console.log(res);
-            navigate('/app');
-        })
-        .catch(err => console.log(err));
+            .then(res => {
+                console.log(res);
+                navigate('/Compra');
+            })
+            .catch(err => console.log(err));
     }
 
     return (
@@ -28,11 +28,11 @@ function CreateCompras() {
                 <form onSubmit={handleSubmit}>
                     <h2>Add Compra</h2>
                     <div className='mb-2'>
-                        <label htmlFor='fechaNac'>Birth Day</label>
+                        <label htmlFor='fechaNac'>Fecha Factura</label>
                         <input 
                             type='date' 
                             id='fechaNac'
-                            placeholder='Enter Birth Date' 
+                            placeholder='Ingrese la fecha de la factura' 
                             className='form-control'
                             onChange={e => SetDate(e.target.value)} 
                         />
@@ -42,7 +42,7 @@ function CreateCompras() {
                         <input 
                             type='number' 
                             id='ID_Persona'
-                            placeholder='Enter Points' 
+                            placeholder='Enter Id' 
                             className='form-control'
                             onChange={e => SetIdPer(e.target.value)}  
                         />

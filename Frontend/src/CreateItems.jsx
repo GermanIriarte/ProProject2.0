@@ -3,43 +3,46 @@ import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 
 function CreateItems() {
-    const { Cod_Factura } = useParams();  // Extraer Cod_Factura de la URL
+    // Extraer ambos parámetros de la URL
+    const { Cod_Factura, ID_Persona } = useParams();  
     const [Cod_Producto, setCodProducto] = useState('');
     const [Cantidad, setCantidad] = useState('');
     const [itemsVendidos, setItemsVendidos] = useState([]); 
     const navigate = useNavigate();  
 
-    
     useEffect(() => {
+        // Obtener los items vendidos para la factura actual
         axios.get(`http://localhost:8081/itemsVendidos/${Cod_Factura}`)
         .then(res => {
             setItemsVendidos(res.data);  
         })
         .catch(err => console.log(err));
-    }, [Cod_Factura]);  
+    }, [Cod_Factura]);
 
-   
     function handleSubmit(event) {
         event.preventDefault();
-    
         
         if (Cantidad <= 0) {
             alert("La cantidad debe ser mayor a 0");
             return;
         }
-    
-        axios.post(`http://localhost:8081/createItemVendido/${Cod_Factura}`, {
+
+        // Realizar la solicitud POST enviando Cod_Producto y Cantidad en el cuerpo, y Cod_Factura e ID_Persona en la URL
+        axios.post(`http://localhost:8081/createItemVendido/${Cod_Factura}/${ID_Persona}`, {
             Cod_Producto,
             Cantidad
         })
         .then(res => {
             alert(res.data.message);  
 
+            // Actualizar la lista de items vendidos
             axios.get(`http://localhost:8081/itemsVendidos/${Cod_Factura}`)
             .then(res => {
-                setItemsVendidos(res.data);  
+                setItemsVendidos(res.data);
+                // Limpiar los campos del formulario si lo deseas
+                setCodProducto('');
+                setCantidad('');
             });
-            navigate('/app');  
         })
         .catch(err => {
             if (err.response && err.response.data.message) {
@@ -49,9 +52,7 @@ function CreateItems() {
             }
         });
     }
-    
 
-    
     function handleNavigateBack() {
         navigate('/app');
     }
@@ -88,13 +89,14 @@ function CreateItems() {
                 <div className='col-md-6'>
                     <div className='form-container'>
                         <form onSubmit={handleSubmit}>
-                            <h2>Add Item to Factura {Cod_Factura}</h2>
+                            <h2>Añadir Item a la Factura {Cod_Factura}</h2>
                             <div className='mb-2'>
                                 <label htmlFor=''>Producto</label>
                                 <input 
                                     type='text' 
-                                    placeholder='Enter Product Code' 
+                                    placeholder='Ingrese el código del producto' 
                                     className='form-control'
+                                    value={Cod_Producto}
                                     onChange={e => setCodProducto(e.target.value)} 
                                 />
                             </div>
@@ -102,12 +104,13 @@ function CreateItems() {
                                 <label htmlFor=''>Cantidad</label>
                                 <input 
                                     type='number' 
-                                    placeholder='Enter Quantity' 
+                                    placeholder='Ingrese la cantidad' 
                                     className='form-control'
+                                    value={Cantidad}
                                     onChange={e => setCantidad(e.target.value)} 
                                 />
                             </div>
-                            <button className='btn btn-success'>Submit</button>
+                            <button type='submit' className='btn btn-success'>Agregar</button>
                         </form>
 
                         {/* Botón para navegar atrás */}
@@ -118,7 +121,6 @@ function CreateItems() {
                 </div>
             </div>
         </div>
-        
     );
 }
 

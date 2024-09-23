@@ -63,7 +63,7 @@ function Compra() {
     return (
         <div className='persona-container'>
             <div className='persona-content'>
-                <Link to="/createCompras" className='persona-add-btn'>Add +</Link>
+                <Link to="/createCompras" className='persona-add-btn'>Generar Factura</Link>
                 <table className='persona-table'>
                     <thead>
                         <tr>
@@ -82,7 +82,7 @@ function Compra() {
                                     <td>{data.Fecha}</td>
                                     <td>{data.ID_Persona}</td>
                                     <td>${calcularPrecioTotal(data.Cod_Factura).toFixed(2)}</td> {/* Mostrar el precio total */}
-                                    <td><Link to={`/createItems/${data.Cod_Factura}`} className='btn btn-primary'>Items</Link></td>
+                                    <Link to={`/createItems/${data.Cod_Factura}/${data.ID_Persona}`} className='btn btn-primary'>Items</Link>
                                     <td><button className="persona-delete-btn" onClick={() => handleDelete(data.Cod_Factura)}>Delete</button></td>
                                 </tr>
                             ))
