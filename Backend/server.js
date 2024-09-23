@@ -238,6 +238,98 @@ app.post('/RegistrarCompra', (req, res) => {
     });
 });
 
+app.post("/createCompra", (req, res) => {
+    const sql = "INSERT INTO `factura_venta` (`Fecha`, `ID_Persona`) VALUES (?)";
+    const values = [
+        req.body.Fecha,
+        req.body.ID_Persona,
+    ]
+    db.query(sql, [values], (err, data) => {
+        if (err) {
+            console.error(err); // Muestra el error en la consola
+            return res.json("Error");
+        }
+        return res.json("data se mando de manera exitosa");
+    });
+});
+
+// API para crear un nuevo Item_Vendido con verificación de inventario
+app.post('/createItemVendido/:Cod_Factura', (req, res) => {
+    const { Cod_Producto, Cantidad } = req.body;
+    const Cod_Factura = req.params.Cod_Factura;
+
+    // Consultar el stock disponible del producto
+    const checkStockSQL = "SELECT Cantidad FROM productos WHERE Cod_Producto = ?";
+    db.query(checkStockSQL, [Cod_Producto], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: "Error al verificar el inventario" });
+        }
+
+        const stockDisponible = result[0]?.Cantidad;
+
+        if (!stockDisponible || stockDisponible < Cantidad) {
+            return res.status(400).json({ message: "Stock insuficiente" });
+        }
+
+        // Si hay suficiente stock, agregar el ítem a la factura
+        const insertItemSQL = "INSERT INTO Item_Vendido (Cod_Factura, Cod_Producto, Cantidad) VALUES (?, ?, ?)";
+        db.query(insertItemSQL, [Cod_Factura, Cod_Producto, Cantidad], (err, data) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ message: "Error al agregar el ítem a la factura" });
+            }
+
+            // Reducir el stock del producto
+            const updateStockSQL = "UPDATE productos SET Cantidad = Cantidad - ? WHERE Cod_Producto = ?";
+            db.query(updateStockSQL, [Cantidad, Cod_Producto], (err, data) => {
+                if (err) {
+                    console.error(err);
+                    return res.status(500).json({ message: "Error al actualizar el inventario" });
+                }
+                return res.json({ message: "Item agregado y stock actualizado exitosamente" });
+            });
+        });
+    });
+});
+
+
+app.get('/sales', (req, res) => {    
+    const date = req.query.date;
+    const query = `
+      SELECT
+        p.Cod_Producto,
+        p.Nombre,
+        SUM(iv.cantidad) AS cantidad_total,
+        p.Precio,
+        SUM(iv.cantidad * p.precio) AS ventas_totales
+      FROM
+        Factura_Venta f
+      JOIN
+        Item_Vendido iv ON f.Cod_Factura = iv.Cod_Factura
+      JOIN
+        Productos p ON iv.Cod_Producto = p.Cod_Producto
+      WHERE
+        DATE(f.Fecha) = ?
+      GROUP BY
+        p.Cod_Producto, p.Nombre, p.Precio
+      ORDER BY
+        ventas_totales DESC;
+    `;
+    db.query(query, [date], (error, results) => {
+      if (error) {
+        console.error('Error al ejecutar la consulta:', error);
+        res.status(500).send('Error al obtener los datos de ventas');
+      } else {
+        // Calcular las ganancias totales del día
+        const totalEarnings = results.reduce((total, item) => total + item.ventas_totales, 0);
+        res.json({ sales: results, totalEarnings });
+        console.log("Sent: ", results, " , ", totalEarnings);
+      }
+    });
+  });
+
+
 app.get("/readProductos",(req,res) =>{
     const sql = "SELECT * FROM productos";
     db.query(sql, (err,data) => {
@@ -415,6 +507,48 @@ app.get("/readProveedor",(req,res) =>{
         return res.json(data);
     })
 })
+
+app.get('/readCompra', (req, res) => {
+    const { Cod_Factura } = req.query;
+
+    // Consulta SQL para obtener el producto por su código
+    const sql = 'SELECT * FROM factura_venta';
+
+    db.query(sql, [Cod_Factura], (err, result) => {
+        if (err) {
+            console.error('Error al obtener el producto:', err);
+            res.status(500).json({ error: 'Error al obtener el producto' });
+        } else if (result.length === 0) {
+            res.status(404).json({ error: 'Producto no encontrado' });
+        } else {
+            res.json(result);
+        }
+    });
+});
+
+app.get('/itemsVendidos/:Cod_Factura', (req, res) => {
+    const Cod_Factura = req.params.Cod_Factura;
+    const sql = "SELECT * FROM Item_Vendido WHERE Cod_Factura = ?";
+    db.query(sql, [Cod_Factura], (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.json("Error");
+        }
+        return res.json(data);
+    });
+});
+
+app.get('/readItemsVendidos', (req, res) => {
+    const sql = "SELECT * FROM Item_Vendido";
+    db.query(sql, (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.json("Error");
+        }
+        return res.json(data);
+    });
+});
+
 
 app.put('/updatePersona/:ID_Persona', (req, res) => {
     const ID_Persona = req.params.ID_Persona
@@ -729,6 +863,31 @@ app.delete('/deleteProveedor/:Cod_Proveedor', (req, res) => {
         return res.json("Data DELETED SUCCESS");
     });
 });
+
+
+app.delete('/deleteCompra/:Cod_Factura', (req, res) => {
+    const Cod_Factura = req.params.Cod_Factura;
+
+    // Primero eliminamos los items relacionados
+    const deleteItemsSQL = "DELETE FROM item_vendido WHERE Cod_Factura = ?";
+    db.query(deleteItemsSQL, [Cod_Factura], (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: "Error al eliminar los items de la factura", error: err });
+        }
+
+        // Luego eliminamos la factura
+        const deleteFacturaSQL = "DELETE FROM factura_venta WHERE Cod_Factura = ?";
+        db.query(deleteFacturaSQL, [Cod_Factura], (err, data) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ message: "Error al eliminar la factura", error: err });
+            }
+            return res.json({ message: "Factura y sus items eliminados exitosamente" });
+        });
+    });
+});
+
 
 
 app.listen(8081,() => {

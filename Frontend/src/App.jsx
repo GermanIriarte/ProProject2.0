@@ -6,6 +6,9 @@ import Clientes from './Clientes';
 import Empleados from './Empleados';
 import './App.css';  
 import RegistrarCompra from './RegistrarCompra';
+import Compra from './Compra';
+import Reporte from './Reporte';
+
 
 function App() {
   const [selectedMenu, setSelectedMenu] = useState('');
@@ -22,18 +25,18 @@ function App() {
 
   const renderContent = () => {
     switch (selectedMenu) {
-      case 'productos':
+      case 'Productos':
         return <Producto />;
-      case 'proveedores':
+      case 'Proveedores':
         return <Proveedor />;
-      case 'clientes':
+      case 'Clientes':
         return <Clientes />;
-      case 'empleados':
+      case 'Empleados':
         return <Empleados />;
-      case 'RegistrarCompra':
-        return <RegistrarCompra />;
       case 'Compra':
-        return <RegistrarCompra />;
+        return <Compra />;
+      case 'Reporte':
+        return <Reporte />
       default:
         return <div>Selecciona una opción del menú</div>;
     }
@@ -44,12 +47,12 @@ function App() {
       <div className="content">
         <div className="sidebar">
           <ul>
-            <li><button onClick={() => setSelectedMenu('productos')}>Productos</button></li>
-            <li><button onClick={() => setSelectedMenu('proveedores')}>Proveedores</button></li>
-            <li><button onClick={() => setSelectedMenu('clientes')}>Clientes</button></li>
-            <li><button onClick={() => setSelectedMenu('empleados')}>Empleados</button></li>
-            <li><button onClick={() => setSelectedMenu('RegistrarCompra')}>RegistrarCompra</button></li>
+            <li><button onClick={() => setSelectedMenu('Productos')}>Productos</button></li>
+            <li><button onClick={() => setSelectedMenu('Proveedores')}>Proveedores</button></li>
+            <li><button onClick={() => setSelectedMenu('Clientes')}>Clientes</button></li>
+            <li><button onClick={() => setSelectedMenu('Empleados')}>Empleados</button></li>
             <li><button onClick={() => setSelectedMenu('Compra')}>Compra</button></li>
+            <li><button onClick={() => setSelectedMenu('Reporte')}>Reporte</button></li>
           </ul>
           <button onClick={handleLogout} className="logout-button">
             Logout
