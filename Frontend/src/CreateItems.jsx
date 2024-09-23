@@ -6,23 +6,23 @@ function CreateItems() {
     const { Cod_Factura } = useParams();  // Extraer Cod_Factura de la URL
     const [Cod_Producto, setCodProducto] = useState('');
     const [Cantidad, setCantidad] = useState('');
-    const [itemsVendidos, setItemsVendidos] = useState([]);  // Estado para almacenar los items vendidos
-    const navigate = useNavigate();  // Hook para navegar después de la creación
+    const [itemsVendidos, setItemsVendidos] = useState([]); 
+    const navigate = useNavigate();  
 
-    // Función para obtener los items vendidos de una factura específica
+    
     useEffect(() => {
         axios.get(`http://localhost:8081/itemsVendidos/${Cod_Factura}`)
         .then(res => {
-            setItemsVendidos(res.data);  // Guardar los items vendidos en el estado
+            setItemsVendidos(res.data);  
         })
         .catch(err => console.log(err));
-    }, [Cod_Factura]);  // Ejecutar solo cuando cambia Cod_Factura
+    }, [Cod_Factura]);  
 
-    // Manejar la adición de un nuevo item
+   
     function handleSubmit(event) {
         event.preventDefault();
     
-        // Verificar que la cantidad es mayor que 0
+        
         if (Cantidad <= 0) {
             alert("La cantidad debe ser mayor a 0");
             return;
@@ -33,13 +33,13 @@ function CreateItems() {
             Cantidad
         })
         .then(res => {
-            alert(res.data.message);  // Mostrar el mensaje de éxito o error
-            // Recargar los items vendidos después de añadir un nuevo item
+            alert(res.data.message);  
+
             axios.get(`http://localhost:8081/itemsVendidos/${Cod_Factura}`)
             .then(res => {
-                setItemsVendidos(res.data);  // Actualizar los items vendidos
+                setItemsVendidos(res.data);  
             });
-            navigate('/app');  // Redirigir a /app después del envío exitoso
+            navigate('/app');  
         })
         .catch(err => {
             if (err.response && err.response.data.message) {
@@ -51,7 +51,7 @@ function CreateItems() {
     }
     
 
-    // Manejar la navegación de regreso
+    
     function handleNavigateBack() {
         navigate('/app');
     }
